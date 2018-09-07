@@ -17,3 +17,5 @@ class TestNode(unittest.TestCase):
         self.assertEqual(node.x, 0, 'incorrect x')
         self.assertEqual(node.y, 100, 'incorrect y')
         self.assertEqual(node.dir_, 'src', 'incorrect dir')
+
+        del node
