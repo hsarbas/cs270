@@ -1,5 +1,6 @@
 import ZODB
 import persistent
+from app.utils import exceptions
 
 
 class Node(persistent.Persistent):
@@ -8,4 +9,8 @@ class Node(persistent.Persistent):
 
         self.x = x
         self.y = y
+
+        if dir_ not in ['src', 'dst']:
+            raise exceptions.InvalidNodeDirectionError
+
         self.dir_ = dir_
