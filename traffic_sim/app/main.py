@@ -7,6 +7,8 @@ from PySide2.QtGui import *
 from app.view.dock_widgets.toolboxdockwidget import ToolBoxDockWidget
 from app.view.graphicsview import GraphicsView
 
+import ZODB, ZODB.FileStorage, transaction
+
 
 class TrafficSim(QMainWindow):
     def __init__(self, parent):
@@ -21,8 +23,12 @@ class TrafficSim(QMainWindow):
         self.setStatusBar(self.status_bar)
         self.toolbox = None
         self.gc = None
+        self.db_root = None
+        self.db_connection = None
 
         self._initialize_ui()
+        self._initialize_db()
+        self._close_db()
 
         self.show()
 
@@ -100,6 +106,19 @@ class TrafficSim(QMainWindow):
 
         self.toolbox = ToolBoxDockWidget(self, self.gc)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.toolbox)
+
+    def _initialize_db(self):
+
+        _db_dir = os.path.join(os.path.dirname(__file__), 'model/db/simulator.fs')
+        storage = ZODB.FileStorage.FileStorage(_db_dir)
+        _db = ZODB.DB(storage)
+
+        self.db_connection = _db.open()
+        self.db_root = self.db_connection.root()
+
+    def _close_db(self):
+        if self.db_connection:
+            self.db_connection.close()
 
     def clear_map(self):
         pass

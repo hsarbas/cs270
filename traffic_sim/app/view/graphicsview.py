@@ -9,7 +9,7 @@ class GraphicsView(QGraphicsView):
         self.setRenderHint(QPainter.Antialiasing)
 
         self.canvas = GraphicsScene(parent)
-        self.canvas.setSceneRect(0, 0, 500, 400)
+        self.canvas.setSceneRect(0, 0, 800, 400)
         self.setScene(self.canvas)
         self.centerOn(0, 0)
 
