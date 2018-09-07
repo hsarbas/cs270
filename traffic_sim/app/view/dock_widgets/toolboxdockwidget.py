@@ -1,5 +1,7 @@
+import os
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
+from PySide2.QtGui import *
 
 
 class ToolBoxDockWidget(QDockWidget):
@@ -19,6 +21,14 @@ class ToolBoxDockWidget(QDockWidget):
 
         self.toolbox.addItem(self.conflict_types, 'Conflict types')
         self.toolbox.addItem(self.intersection_types, 'Intersection types')
+
+        icons_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'icons/toolbox icons')
+
+        icon = QIcon(os.path.join(icons_dir, 'conflicts.png'))
+        self.toolbox.setItemIcon(0, icon)
+
+        icon = QIcon(os.path.join(icons_dir, 'intersections.png'))
+        self.toolbox.setItemIcon(1, icon)
 
 
 class ConflictTypes(QWidget):
