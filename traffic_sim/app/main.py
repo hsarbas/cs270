@@ -3,6 +3,7 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 
 from app.view.dock_widgets.toolboxdockwidget import ToolBoxDockWidget
+from app.view.graphicsview import GraphicsView
 
 
 class TrafficSim(QMainWindow):
@@ -78,7 +79,9 @@ class TrafficSim(QMainWindow):
         self.toolbar.addAction(pause_action)
         self.toolbar.addAction(stop_action)
 
-        self.gc = None
+        self.gc = GraphicsView(self)
+        self.setCentralWidget(self.gc)
+
         self.toolbox = ToolBoxDockWidget(self, self.gc)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.toolbox)
 
