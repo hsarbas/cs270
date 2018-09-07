@@ -1,5 +1,8 @@
 import sys
 from PySide2.QtWidgets import *
+from PySide2.QtCore import *
+
+from app.view.dock_widgets.toolboxdockwidget import ToolBoxDockWidget
 
 
 class TrafficSim(QMainWindow):
@@ -13,6 +16,8 @@ class TrafficSim(QMainWindow):
         self.addToolBar(self.toolbar)
         self.status_bar = QStatusBar(self)
         self.setStatusBar(self.status_bar)
+        self.toolbox = None
+        self.gc = None
 
         self._initialize_ui()
 
@@ -20,11 +25,8 @@ class TrafficSim(QMainWindow):
 
     def _initialize_ui(self):
         self.setWindowTitle('CS270 Final Project - Traffic Simulator')
-        self.setGeometry(400, 100, 1080, 720)
 
         clear_map_action = QAction('&Clear map...', self)
-        # icon = QIcon(os.path.join(icons_dir, 'new map.png'))
-        # clear_map_action.setIcon(icon)
         clear_map_action.setShortcut('Ctrl+C')
         clear_map_action.setStatusTip('Clear map')
         clear_map_action.triggered.connect(self.clear_map)
@@ -32,8 +34,6 @@ class TrafficSim(QMainWindow):
         quit_action = QAction('&Quit simulator...', self)
         quit_action.setShortcut('Ctrl+Q')
         quit_action.setStatusTip('Quit simulator')
-        # icon = QIcon(os.path.join(icons_dir, 'quit.png'))
-        # quit_action.setIcon(icon)
         quit_action.triggered.connect(self.close)
 
         file_menu = QMenu('File')
@@ -78,7 +78,9 @@ class TrafficSim(QMainWindow):
         self.toolbar.addAction(pause_action)
         self.toolbar.addAction(stop_action)
 
-        self.status_bar.showMessage('status bar')
+        self.gc = None
+        self.toolbox = ToolBoxDockWidget(self, self.gc)
+        self.addDockWidget(Qt.LeftDockWidgetArea, self.toolbox)
 
     def clear_map(self):
         pass
