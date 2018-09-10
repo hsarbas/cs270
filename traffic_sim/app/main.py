@@ -28,7 +28,6 @@ class TrafficSim(QMainWindow):
 
         self._initialize_ui()
         self._initialize_db()
-        self._close_db()
 
         self.show()
 
@@ -116,6 +115,18 @@ class TrafficSim(QMainWindow):
         self.db_connection = _db.open()
         self.db_root = self.db_connection.root()
 
+        if 'roads' not in self.db_root:
+            self.db_root['roads'] = []
+            transaction.commit()
+
+        if 'nodes' not in self.db_root:
+            self.db_root['nodes'] = []
+            transaction.commit()
+
+        if 'agents' not in self.db_root:
+            self.db_root['agents'] = []
+            transaction.commit()
+
     def _close_db(self):
         if self.db_connection:
             self.db_connection.close()
@@ -141,6 +152,7 @@ class TrafficSim(QMainWindow):
                                            QMessageBox.No, QMessageBox.No)
 
         if reply == QMessageBox.Yes:
+            self._close_db()
             event.accept()
         else:
             event.ignore()
