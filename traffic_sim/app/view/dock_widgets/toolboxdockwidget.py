@@ -47,6 +47,7 @@ class ConflictTypes(QWidget):
         merging_btn.setText('Merging conflict')
         merging_btn.setStatusTip('Create a simple merging conflict')
         merging_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        merging_btn.clicked.connect(self.merging_btn_clicked)
 
         diverging_btn = QToolButton()
         diverging_btn.setText('Diverging conflict')
@@ -61,6 +62,9 @@ class ConflictTypes(QWidget):
         btn_layout.addWidget(merging_btn, 0, 0)
         btn_layout.addWidget(diverging_btn, 1, 0)
         btn_layout.addWidget(crossing_btn, 2, 0)
+
+    def merging_btn_clicked(self):
+        self.gc.canvas.add_merging_conflict()
 
 
 class IntersectionTypes(QWidget):

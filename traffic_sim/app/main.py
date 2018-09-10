@@ -1,13 +1,19 @@
-import sys
 import os
-from PySide2.QtWidgets import *
+import sys
+
+import ZODB
+import ZODB.FileStorage
+import transaction
+from persistent.mapping import PersistentMapping
+from persistent.list import PersistentList
+
 from PySide2.QtCore import *
 from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 from app.view.dock_widgets.toolboxdockwidget import ToolBoxDockWidget
 from app.view.graphicsview import GraphicsView
-
-import ZODB, ZODB.FileStorage, transaction
+from app.controller import factory
 
 
 class TrafficSim(QMainWindow):
@@ -26,8 +32,9 @@ class TrafficSim(QMainWindow):
         self.db_root = None
         self.db_connection = None
 
-        self._initialize_ui()
         self._initialize_db()
+        self._populate_db()
+        self._initialize_ui()
 
         self.show()
 
@@ -100,7 +107,7 @@ class TrafficSim(QMainWindow):
         self.toolbar.addAction(pause_action)
         self.toolbar.addAction(stop_action)
 
-        self.gc = GraphicsView(self)
+        self.gc = GraphicsView(self, self.db_root)
         self.setCentralWidget(self.gc)
 
         self.toolbox = ToolBoxDockWidget(self, self.gc)
@@ -116,16 +123,27 @@ class TrafficSim(QMainWindow):
         self.db_root = self.db_connection.root()
 
         if 'roads' not in self.db_root:
-            self.db_root['roads'] = []
+            self.db_root['roads'] = PersistentMapping()
+            self.db_root['roads']['links'] = PersistentList()
+            self.db_root['roads']['connectors'] = PersistentList()
             transaction.commit()
 
         if 'nodes' not in self.db_root:
-            self.db_root['nodes'] = []
+            self.db_root['nodes'] = ()
             transaction.commit()
 
         if 'agents' not in self.db_root:
-            self.db_root['agents'] = []
+            self.db_root['agents'] = ()
             transaction.commit()
+
+    def _populate_db(self):
+        link_1 = factory.create_link(10, 50, 200, 200, 4)
+        link_2 = factory.create_link(20, 30, 300, 500, 4)
+
+        self.db_root['roads']['links'].append(link_1)
+        self.db_root['roads']['links'].append(link_2)
+
+        transaction.commit()
 
     def _close_db(self):
         if self.db_connection:
