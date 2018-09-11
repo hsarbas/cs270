@@ -4,16 +4,15 @@ import sys
 import ZODB
 import ZODB.FileStorage
 import transaction
-from persistent.mapping import PersistentMapping
-from persistent.list import PersistentList
-
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
+from persistent.list import PersistentList
+from persistent.mapping import PersistentMapping
 
+from app.controller import factory
 from app.view.dock_widgets.toolboxdockwidget import ToolBoxDockWidget
 from app.view.graphicsview import GraphicsView
-from app.controller import factory
 
 
 class TrafficSim(QMainWindow):
@@ -155,8 +154,8 @@ class TrafficSim(QMainWindow):
 
         if 'roads' not in self.db_root:
             self.db_root['roads'] = PersistentMapping()
-            self.db_root['roads']['links'] = PersistentList()
-            self.db_root['roads']['connectors'] = PersistentList()
+            self.db_root['roads']['links'] = PersistentMapping()
+            self.db_root['roads']['connectors'] = PersistentMapping()
             transaction.commit()
 
         if 'nodes' not in self.db_root:
@@ -168,17 +167,32 @@ class TrafficSim(QMainWindow):
             transaction.commit()
 
     def _populate_db(self):
-        link_1 = factory.create_link(10, 50, 200, 200, 4)
-        link_2 = factory.create_link(20, 30, 300, 500, 4)
+        link_1 = factory.create_link('link 1', 100, 100, 570, 100, 4)
+        link_2 = factory.create_link('link 2', 700, 100, 1000, 100, 4)
+        link_3 = factory.create_link('link 3', 300, 400, 600, 170, 4)
 
-        self.db_root['roads']['links'].append(link_1)
-        self.db_root['roads']['links'].append(link_2)
+        conn_1 = factory.create_connector('conn 1', link_1, link_2)
+        conn_2 = factory.create_connector('conn 2', link_3, link_2)
+
+        self.db_root['roads']['links'][link_1.label] = link_1
+        self.db_root['roads']['links'][link_2.label] = link_2
+        self.db_root['roads']['links'][link_3.label] = link_3
+
+        self.db_root['roads']['connectors'][conn_1.label] = conn_1
+        self.db_root['roads']['connectors'][conn_2.label] = conn_2
 
         transaction.commit()
 
     def _close_db(self):
         if self.db_connection:
             self.db_connection.close()
+
+    def _delete_db(self):
+        _db_dir = os.path.join(os.path.dirname(__file__), 'model/db/')
+
+        for root, dirs, files in os.walk(_db_dir):
+            for file_ in files:
+                os.remove(os.path.join(root, file_))
 
     def clear_map(self):
         pass
@@ -215,6 +229,7 @@ class TrafficSim(QMainWindow):
 
         if reply == QMessageBox.Yes:
             self._close_db()
+            self._delete_db()
             event.accept()
         else:
             event.ignore()
