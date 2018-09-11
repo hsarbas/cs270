@@ -37,6 +37,8 @@ class ConflictTypes(QWidget):
         self.gc = gc
         self.parent = parent
 
+        icons_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'icons/toolbox icons')
+
         main_layout = QGridLayout(self)
         groupbox = QGroupBox()
 
@@ -47,12 +49,16 @@ class ConflictTypes(QWidget):
         merging_btn.setText('Merging conflict')
         merging_btn.setStatusTip('Create a simple merging conflict')
         merging_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        icon = QIcon(os.path.join(icons_dir, 'merging.png'))
+        merging_btn.setIcon(icon)
         merging_btn.clicked.connect(self.merging_btn_clicked)
 
         diverging_btn = QToolButton()
         diverging_btn.setText('Diverging conflict')
         diverging_btn.setStatusTip('Create a simple diverging conflict')
         diverging_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        icon = QIcon(os.path.join(icons_dir, 'diverging.png'))
+        diverging_btn.setIcon(icon)
 
         crossing_btn = QToolButton()
         crossing_btn.setText('Crossing conflict')

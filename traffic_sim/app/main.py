@@ -57,11 +57,38 @@ class TrafficSim(QMainWindow):
         quit_action.setStatusTip('Quit simulator')
         quit_action.triggered.connect(self.close)
 
-        file_menu = QMenu('File')
+        file_menu = QMenu('&File')
         file_menu.addAction(clear_map_action)
         file_menu.addSeparator()
         file_menu.addAction(quit_action)
         self.menu_bar.addMenu(file_menu)
+
+        zoom_in_action = QAction('Zoom in', self)
+        icon = QIcon(os.path.join(icons_dir, 'zoom in.png'))
+        zoom_in_action.setIcon(icon)
+        zoom_in_action.setShortcut('Ctrl+]')
+        zoom_in_action.setStatusTip('Zoom in')
+        zoom_in_action.triggered.connect(self.zoom_in)
+
+        zoom_out_action = QAction('Zoom out', self)
+        icon = QIcon(os.path.join(icons_dir, 'zoom out.png'))
+        zoom_out_action.setIcon(icon)
+        zoom_out_action.setShortcut('Ctrl+[')
+        zoom_out_action.setStatusTip('Zoom out')
+        zoom_out_action.triggered.connect(self.zoom_out)
+
+        zoom_to_fit_action = QAction('Zoom to fit', self)
+        icon = QIcon(os.path.join(icons_dir, 'zoom fit.png'))
+        zoom_to_fit_action.setIcon(icon)
+        zoom_to_fit_action.setShortcut('Ctrl+\\')
+        zoom_to_fit_action.setStatusTip('Zoom to fit')
+        zoom_to_fit_action.triggered.connect(self.zoom_to_fit)
+
+        view_menu = QMenu('&View')
+        view_menu.addAction(zoom_in_action)
+        view_menu.addAction(zoom_out_action)
+        view_menu.addAction(zoom_to_fit_action)
+        self.menu_bar.addMenu(view_menu)
 
         parameters_action = QAction('&Parameters...', self)
         icon = QIcon(os.path.join(icons_dir, 'parameters.png'))
@@ -91,7 +118,7 @@ class TrafficSim(QMainWindow):
         stop_action.setStatusTip('Stop current simulation')
         stop_action.triggered.connect(self.stop)
 
-        traffic_data_menu = QMenu('Simulation')
+        traffic_data_menu = QMenu('&Simulation')
         traffic_data_menu.addAction(parameters_action)
         traffic_data_menu.addSeparator()
         traffic_data_menu.addAction(run_action)
@@ -102,6 +129,10 @@ class TrafficSim(QMainWindow):
         self.toolbar.addAction(clear_map_action)
         self.toolbar.addSeparator()
         self.toolbar.addAction(parameters_action)
+        self.toolbar.addSeparator()
+        self.toolbar.addAction(zoom_in_action)
+        self.toolbar.addAction(zoom_out_action)
+        self.toolbar.addAction(zoom_to_fit_action)
         self.toolbar.addSeparator()
         self.toolbar.addAction(run_action)
         self.toolbar.addAction(pause_action)
@@ -163,6 +194,19 @@ class TrafficSim(QMainWindow):
 
     def stop(self):
         pass
+
+    def zoom_in(self):
+        self.gc.scale(1.1, 1.1)
+
+    def zoom_out(self):
+        self.gc.scale(0.9, 0.9)
+
+    def zoom_to_fit(self):
+        transform = QTransform(1.000000, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000, 0.000000, 1.000000)
+
+        self.gc.setTransform(transform)
+        self.gc.fitInView(self.gc.canvas.itemsBoundingRect(), Qt.KeepAspectRatio)
+        self.gc.ensureVisible(self.gc.canvas.itemsBoundingRect())
 
     def closeEvent(self, event):
         reply = QMessageBox.question(self, 'Quit simulator',
