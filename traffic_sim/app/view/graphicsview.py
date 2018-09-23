@@ -22,7 +22,12 @@ class GraphicsScene(QGraphicsScene):
         self.scene = Scene(db)
 
     def add_merging_conflict(self):
-        for link in self.scene.db['roads']['links'].values():
+        self.scene.clear()
+
+        for link_label in ['link 1', 'link 2', 'link 3']:
+            link = self.scene.db['roads']['links'][link_label]
+            self.scene.add_link(link)
+
             dlink = factory.create_dlink(link)
             self.addItem(dlink)
 
@@ -31,6 +36,9 @@ class GraphicsScene(QGraphicsScene):
             self.addItem(dnode_src)
             self.addItem(dnode_dst)
 
-        for conn in self.scene.db['roads']['connectors'].values():
+        for conn_label in ['conn 1', 'conn 2']:
+            conn = self.scene.db['roads']['connectors'][conn_label]
+            self.scene.add_connector(conn)
+
             dconn = factory.create_dconnector(conn)
             self.addItem(dconn)

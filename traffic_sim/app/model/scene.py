@@ -12,3 +12,7 @@ class Scene(object):
 
     def populate_scene(self):
         pass
+
+    def clear(self):
+        self.links = []
+        self.connectors = []

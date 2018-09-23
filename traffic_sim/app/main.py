@@ -164,10 +164,6 @@ class TrafficSim(QMainWindow):
             self.db_root['roads']['connectors'] = PersistentMapping()
             transaction.commit()
 
-        if 'nodes' not in self.db_root:
-            self.db_root['nodes'] = ()
-            transaction.commit()
-
         if 'agents' not in self.db_root:
             self.db_root['agents'] = ()
             transaction.commit()
