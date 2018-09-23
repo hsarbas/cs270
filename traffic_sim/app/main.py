@@ -145,8 +145,14 @@ class TrafficSim(QMainWindow):
 
     def _initialize_db(self):
 
-        _db_dir = os.path.join(os.path.dirname(__file__), 'model/db/simulator.fs')
+        if os.name == 'posix':
+            _db_dir = os.path.join(os.path.dirname(__file__), 'model/db/simulator.fs')
+        else:
+            _db_dir = os.path.join(os.path.dirname(__file__), 'model\db\simulator.fs')
+
+        # print _db_dir
         storage = ZODB.FileStorage.FileStorage(_db_dir)
+        # storage = ZODB.FileStorage.FileStorage('simulator.fs')
         _db = ZODB.DB(storage)
 
         self.db_connection = _db.open()
@@ -188,7 +194,10 @@ class TrafficSim(QMainWindow):
             self.db_connection.close()
 
     def _delete_db(self):
-        _db_dir = os.path.join(os.path.dirname(__file__), 'model/db/')
+        if os.name == 'posix':
+            _db_dir = os.path.join(os.path.dirname(__file__), 'model/db/')
+        else:
+            _db_dir = os.path.join(os.path.abspath(__file__), 'model\\db\\')
 
         for root, dirs, files in os.walk(_db_dir):
             for file_ in files:
