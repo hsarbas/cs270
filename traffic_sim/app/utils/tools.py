@@ -1,4 +1,4 @@
-PX2M_DEFAULT = .18
+from const import PX2M_DEFAULT
 
 
 def to_m(px):

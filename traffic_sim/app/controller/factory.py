@@ -1,5 +1,6 @@
 from app.model.infra.node import Node
 from app.model.infra.road import Link, Connector
+from app.model.meta.traffic import Dispatcher
 from app.view.drawables.dnode import DNode
 from app.view.drawables.droad import DLink, DConnector
 
@@ -17,6 +18,10 @@ def create_link(label, src_x, src_y, dst_x, dst_y, lanes):
 
 def create_connector(label, src_road, dst_road):
     return Connector(label, src_road, dst_road)
+
+
+def create_dispatcher(road):
+    return Dispatcher(road)
 
 
 def create_dnode(node):

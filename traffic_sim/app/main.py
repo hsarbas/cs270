@@ -7,12 +7,12 @@ import transaction
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
-from persistent.list import PersistentList
 from persistent.mapping import PersistentMapping
 
 from app.controller import factory
 from app.view.dock_widgets.toolboxdockwidget import ToolBoxDockWidget
 from app.view.graphicsview import GraphicsView
+from app.model.simulator import Engine
 
 
 class TrafficSim(QMainWindow):
@@ -34,6 +34,8 @@ class TrafficSim(QMainWindow):
         self._initialize_db()
         self._populate_db()
         self._initialize_ui()
+
+        self.simulator = Engine(self, self.gc.canvas.scene)
 
         self.show()
 
@@ -164,6 +166,10 @@ class TrafficSim(QMainWindow):
             self.db_root['roads']['connectors'] = PersistentMapping()
             transaction.commit()
 
+        if 'dispatchers' not in self.db_root:
+            self.db_root['dispatchers'] = PersistentMapping()
+            transaction.commit()
+
         if 'agents' not in self.db_root:
             self.db_root['agents'] = ()
             transaction.commit()
@@ -173,15 +179,21 @@ class TrafficSim(QMainWindow):
         link_2 = factory.create_link('link 2', 700, 100, 1000, 100, 4)
         link_3 = factory.create_link('link 3', 300, 400, 600, 170, 4)
 
-        conn_1 = factory.create_connector('conn 1', link_1, link_2)
-        conn_2 = factory.create_connector('conn 2', link_3, link_2)
+        conn_1_2 = factory.create_connector('conn 1', link_1, link_2)  # conn_from_to
+        conn_3_2 = factory.create_connector('conn 2', link_3, link_2)
+
+        dispatcher_1 = factory.create_dispatcher(link_1)
+        dispatcher_3 = factory.create_dispatcher(link_3)
 
         self.db_root['roads']['links'][link_1.label] = link_1
         self.db_root['roads']['links'][link_2.label] = link_2
         self.db_root['roads']['links'][link_3.label] = link_3
 
-        self.db_root['roads']['connectors'][conn_1.label] = conn_1
-        self.db_root['roads']['connectors'][conn_2.label] = conn_2
+        self.db_root['roads']['connectors'][conn_1_2.label] = conn_1_2
+        self.db_root['roads']['connectors'][conn_3_2.label] = conn_3_2
+
+        self.db_root['dispatchers'][link_1.label] = dispatcher_1
+        self.db_root['dispatchers'][link_3.label] = dispatcher_3
 
         transaction.commit()
 
@@ -206,13 +218,13 @@ class TrafficSim(QMainWindow):
         pass
     
     def run(self):
-        pass
+        self.simulator.play()
 
     def pause(self):
-        pass
+        self.simulator.pause()
 
     def stop(self):
-        pass
+        self.simulator.stop()
 
     def zoom_in(self):
         self.gc.scale(1.1, 1.1)

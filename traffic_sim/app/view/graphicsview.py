@@ -28,6 +28,10 @@ class GraphicsScene(QGraphicsScene):
             link = self.scene.db['roads']['links'][link_label]
             self.scene.add_link(link)
 
+            if link_label in self.scene.db['dispatchers']:
+                dispatcher = self.scene.db['dispatchers'][link_label]
+                self.scene.add_dispatcher(dispatcher)
+
             dlink = factory.create_dlink(link)
             self.addItem(dlink)
 
