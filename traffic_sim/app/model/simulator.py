@@ -7,7 +7,7 @@ class Engine(QObject):
         super(Engine, self).__init__(parent=parent)
         self.parent = parent
         self.clock = Clock()
-        self.clock.course.connect(self._step)
+        self.clock.coarse.connect(self._step)
         self.scene = scene
 
     def _step(self, time):
@@ -16,6 +16,7 @@ class Engine(QObject):
     def play(self):
         for dispatcher in self.scene.dispatchers.values():
             dispatcher.run(self.clock)
+            dispatcher.dispatch_agent.connect(self.agent_dispatched_callback)
 
         self.clock.run()
 
@@ -24,3 +25,6 @@ class Engine(QObject):
 
     def stop(self):
         self.clock.reset()
+
+    def agent_dispatched_callback(self):
+        print 'agent_dispatched!'

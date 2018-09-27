@@ -5,7 +5,7 @@ import const
 class Clock(QTimer):
 
     fine = Signal()
-    course = Signal(int)
+    coarse = Signal(int)
 
     def __init__(self):
         super(Clock, self).__init__(parent=None)
@@ -19,7 +19,7 @@ class Clock(QTimer):
         self.now += const.DT
 
         if self.now % self.dt_course == 0:
-            self.course.emit(self.now/self.dt_course)
+            self.coarse.emit(self.now / self.dt_course)
         self.fine.emit()
 
     def run(self):
