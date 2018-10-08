@@ -167,7 +167,7 @@ class TrafficSim(QMainWindow):
             transaction.commit()
 
         if 'agents' not in self.db_root:
-            self.db_root['agents'] = ()
+            self.db_root['agents'] = PersistentMapping()
             transaction.commit()
 
     def _populate_db(self):
@@ -177,9 +177,6 @@ class TrafficSim(QMainWindow):
 
         conn_1_2 = factory.create_connector('conn 1', link_1, link_2)  # conn_from_to
         conn_3_2 = factory.create_connector('conn 2', link_3, link_2)
-
-        dispatcher_1 = factory.create_dispatcher(link_1)
-        dispatcher_3 = factory.create_dispatcher(link_3)
 
         self.db_root['roads']['links'][link_1.label] = link_1
         self.db_root['roads']['links'][link_2.label] = link_2

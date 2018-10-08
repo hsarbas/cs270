@@ -19,7 +19,8 @@ class AbstractRoad(persistent.Persistent):
         self.length = sqrt(self.dx ** 2 + self.dy ** 2)
 
     def __repr__(self):
-        return '<%s: (%s, %s) -> (%s, %s)>' % (self.__class__.__name__, self.src.x, self.src.y, self.dst.x, self.dst.y)
+        return '<%s>' % self.label
+        # return '<%s: (%s, %s) -> (%s, %s)>' % (self.__class__.__name__, self.src.x, self.src.y, self.dst.x, self.dst.y)
 
 
 class Link(AbstractRoad):
