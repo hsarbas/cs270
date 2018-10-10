@@ -42,5 +42,5 @@ def create_agent(vel, acc):
     return Agent(vel, acc)
 
 
-def create_dagent(agent, road, pos, lane):
-    return DAgent(agent, road, pos, lane)
+def create_dagent(agent):
+    return DAgent(agent)

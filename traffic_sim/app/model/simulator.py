@@ -14,7 +14,7 @@ class Engine(QObject):
         self.clock.coarse.connect(self.update_timer)
         self.gc = gc
         self.scene = gc.canvas.scene
-        self.agent_manager = AgentManager(self.scene.db, self.clock)
+        self.agent_manager = AgentManager(self.clock)
 
     def update_timer(self, time):
         self.parent.status_bar.showMessage(str(time))
@@ -47,5 +47,5 @@ class Engine(QObject):
         agent = factory.create_agent(init_vel, init_acc)
         self.agent_manager.add_agent(agent, road, pos, lane)
 
-        self.gc.canvas.add_dagent(agent, road, pos, lane)
+        self.gc.canvas.add_dagent(agent)
 

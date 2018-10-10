@@ -14,7 +14,8 @@ class Dispatcher(QObject):
         self.flow_rate = None
 
     def run(self, clock):
-        self.flow_rate = random.choice([1, 2, 3, 4, 5])
+        self.flow_rate = 5
+        # self.flow_rate = random.choice([1, 2, 3, 4, 5])
 
         if clock:
             self.clock = clock
@@ -24,8 +25,8 @@ class Dispatcher(QObject):
 
     def _signal_callback(self, time):
         if time % self.flow_rate == 0:
-            init_val = dict(init_vel=1.0,
-                            init_acc=1.0,
+            init_val = dict(init_vel=0.0,
+                            init_acc=0.0,
                             road=self.road,
                             pos=0.0,
                             lane=0)

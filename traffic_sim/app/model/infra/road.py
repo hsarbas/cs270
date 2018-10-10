@@ -20,10 +20,6 @@ class AbstractRoad(persistent.Persistent):
 
     def __repr__(self):
         return '<%s>' % self.label
-        # return '<%s: (%s, %s) -> (%s, %s)>' % (self.__class__.__name__, self.src.x, self.src.y, self.dst.x, self.dst.y)
-
-    def __del__(self):
-        print 'pass'
 
 
 class Link(AbstractRoad):
