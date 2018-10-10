@@ -1,8 +1,10 @@
 from app.model.infra.node import Node
 from app.model.infra.road import Link, Connector
 from app.model.meta.traffic import Dispatcher
+from app.model.agent.agent import Agent
 from app.view.drawables.dnode import DNode
 from app.view.drawables.droad import DLink, DConnector
+from app.view.drawables.dagent import DAgent
 
 
 def create_node(x, y, dir_):
@@ -34,3 +36,11 @@ def create_dlink(link):
 
 def create_dconnector(connector):
     return DConnector(connector)
+
+
+def create_agent(vel, acc):
+    return Agent(vel, acc)
+
+
+def create_dagent(agent, road, pos, lane):
+    return DAgent(agent, road, pos, lane)

@@ -2,6 +2,7 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 from app.model.scene import Scene
 from app.controller import factory
+import transaction
 
 
 class GraphicsView(QGraphicsView):
@@ -23,6 +24,7 @@ class GraphicsScene(QGraphicsScene):
 
     def add_merging_conflict(self):
         self.scene.clear()
+        self.clear()
 
         for link_label in ['link 1', 'link 2', 'link 3']:
             link = self.scene.db['roads']['links'][link_label]
@@ -46,3 +48,16 @@ class GraphicsScene(QGraphicsScene):
 
             dconn = factory.create_dconnector(conn)
             self.addItem(dconn)
+
+    def add_diverging_conflict(self):
+        self.scene.clear()
+        self.clear()
+
+    def add_crossing_conflict(self):
+        self.scene.clear()
+        self.clear()
+
+    def add_dagent(self, agent, road, pos, lane):
+        if agent:
+            dagent = factory.create_dagent(agent, road, pos, lane)
+            self.addItem(dagent)

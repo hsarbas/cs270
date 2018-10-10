@@ -3,15 +3,16 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 
 from app.utils import tools
+import weakref
 
 
 class DLink(QGraphicsLineItem):
     def __init__(self, link):
         super(DLink, self).__init__(parent=None)
-        self.object = link
+        self._w_link = weakref.ref(link)
 
-        self.setLine(link.src.x, link.src.y, link.dst.x, link.dst.y)
-        width = tools.to_px(link.lanes * link.lane_width)
+        self.setLine(self.object.src.x, self.object.src.y, self.object.dst.x, self.object.dst.y)
+        width = tools.to_px(self.object.lanes * self.object.lane_width)
 
         pen = QPen()
         pen.setBrush(Qt.darkGray)
@@ -21,14 +22,18 @@ class DLink(QGraphicsLineItem):
 
         self.setZValue(1)
 
+    @property
+    def object(self):
+        return self._w_link()
+
 
 class DConnector(QGraphicsLineItem):
     def __init__(self, connector):
         super(DConnector, self).__init__(parent=None)
-        self.object = connector
+        self._w_conn = weakref.ref(connector)
 
-        self.setLine(connector.src.x, connector.src.y, connector.dst.x, connector.dst.y)
-        width = tools.to_px(connector.lanes * connector.lane_width)
+        self.setLine(self.object.src.x, self.object.src.y, self.object.dst.x, self.object.dst.y)
+        width = tools.to_px(self.object.lanes * self.object.lane_width)
 
         pen = QPen()
         pen.setBrush(Qt.lightGray)
@@ -37,3 +42,7 @@ class DConnector(QGraphicsLineItem):
         self.setPen(pen)
 
         self.setZValue(0)
+
+    @property
+    def object(self):
+        return self._w_conn()

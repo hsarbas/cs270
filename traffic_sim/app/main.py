@@ -35,7 +35,7 @@ class TrafficSim(QMainWindow):
         self._populate_db()
         self._initialize_ui()
 
-        self.simulator = Engine(self, self.gc.canvas.scene)
+        self.simulator = Engine(self, self.gc)
 
         self.show()
 
