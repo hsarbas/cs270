@@ -29,6 +29,11 @@ class DAgent(QGraphicsLineItem):
         return self._w_agent()
 
     def responder(self):
-        pos = tools.to_px(self.object.position['pos'])
 
-        self.setLine(pos, 10, pos - tools.to_px(self.object.length), 10)
+        road = self.object.position['road']
+        pos = tools.to_px(self.object.position['pos'])
+        lane = self.object.position['lane']
+
+        front_x, front_y = tools.locate_global(road, pos, lane + 0.5)
+        rear_x, rear_y = tools.locate_global(road, pos - tools.to_px(self.object.length), lane + 0.5)
+        self.setLine(rear_x, rear_y, front_x, front_y)

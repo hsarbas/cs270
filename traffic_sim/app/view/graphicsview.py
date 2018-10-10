@@ -29,8 +29,8 @@ class GraphicsScene(QGraphicsScene):
             link = self.scene.db['roads']['links'][link_label]
             self.scene.add_link(link)
 
-            if link_label in ['link 1']:
-            # if link_label in ['link 1', 'link 3']:
+            # if link_label in ['link 1']:
+            if link_label in ['link 1', 'link 3']:
                 dispatcher = factory.create_dispatcher(link)
                 self.scene.add_dispatcher(dispatcher)
 

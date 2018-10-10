@@ -13,6 +13,7 @@ class AbstractRoad(persistent.Persistent):
         self.dst = dst
         self.lanes = lanes
         self.lane_width = const.LANE_WIDTH
+        self.width = self.lanes * self.lane_width
 
         self.dx = self.dst.x - self.src.x
         self.dy = self.dst.y - self.src.y
