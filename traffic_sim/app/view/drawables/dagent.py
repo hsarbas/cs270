@@ -7,11 +7,13 @@ import weakref
 
 
 class DAgent(QGraphicsLineItem):
-    def __init__(self, agent):
+    def __init__(self, gc, agent):
         super(DAgent, self).__init__(parent=None)
 
+        self.gc = gc
         self._w_agent = weakref.ref(agent)
         self.object.moved.connect(self.responder)
+        self.object.killed.connect(self.delete_)
 
         # self.setLine(10, 10, 50, 10)
         width = tools.to_px(self.object.width)
@@ -37,3 +39,6 @@ class DAgent(QGraphicsLineItem):
         front_x, front_y = tools.locate_global(road, pos, lane + 0.5)
         rear_x, rear_y = tools.locate_global(road, pos - tools.to_px(self.object.length), lane + 0.5)
         self.setLine(rear_x, rear_y, front_x, front_y)
+
+    def delete_(self):
+        self.gc.remove_dagent(self)

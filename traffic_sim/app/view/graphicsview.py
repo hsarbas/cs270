@@ -59,5 +59,9 @@ class GraphicsScene(QGraphicsScene):
 
     def add_dagent(self, agent):
         if agent:
-            dagent = factory.create_dagent(agent)
+            dagent = factory.create_dagent(self, agent)
             self.addItem(dagent)
+
+    def remove_dagent(self, dagent):
+        self.removeItem(dagent)
+        del dagent

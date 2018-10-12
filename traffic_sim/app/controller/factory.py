@@ -38,9 +38,9 @@ def create_dconnector(connector):
     return DConnector(connector)
 
 
-def create_agent(vel, acc):
-    return Agent(vel, acc)
+def create_agent(vel, acc, route):
+    return Agent(vel, acc, route)
 
 
-def create_dagent(agent):
-    return DAgent(agent)
+def create_dagent(gc, agent):
+    return DAgent(gc, agent)

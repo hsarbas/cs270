@@ -9,8 +9,9 @@ _id_counter = itertools.count()
 class Agent(QObject):
 
     moved = Signal()
+    killed = Signal()
 
-    def __init__(self, init_vel, init_acc):
+    def __init__(self, init_vel, init_acc, route):
         super(Agent, self).__init__(parent=None)
         self.vel = init_vel
         self.acc = init_acc
@@ -19,6 +20,7 @@ class Agent(QObject):
         self.dec_max = const.MAXIMUM_DECELERATION
         self.length = const.LENGTH
         self.width = const.WIDTH
+        self.route = route
 
         self.position = dict()
 
@@ -38,3 +40,6 @@ class Agent(QObject):
 
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.id_)
+
+    def __del__(self):
+        self.killed.emit()

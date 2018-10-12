@@ -1,18 +1,22 @@
 import weakref
+import collections
 
 
 class Scene(object):
     def __init__(self, db):
         self.db = db
-        self.links = []
-        self.connectors = []
+        self.links = weakref.WeakValueDictionary()
+        self.connectors = weakref.WeakValueDictionary()
         self.dispatchers = weakref.WeakKeyDictionary()
+        self.entry_roads = []
+        self.exit_roads = []
+        self.routes = collections.defaultdict(list)
 
     def add_link(self, link):
-        self.links.append(link)
+        self.links[link.label] = link
 
     def add_connector(self, connector):
-        self.connectors.append(connector)
+        self.connectors[connector.label] = connector
 
     def add_dispatcher(self, dispatcher):
         self.dispatchers[dispatcher.road] = dispatcher
@@ -21,6 +25,9 @@ class Scene(object):
         pass
 
     def clear(self):
-        self.links = []
-        self.connectors = []
+        self.links.clear()
+        self.connectors.clear()
         self.dispatchers.clear()
+        self.entry_roads = []
+        self.exit_roads = []
+        self.routes.clear()

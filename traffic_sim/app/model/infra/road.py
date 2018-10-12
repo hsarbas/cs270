@@ -2,6 +2,7 @@ import ZODB
 import persistent
 import const
 from math import sqrt
+from app.utils import tools
 
 
 class AbstractRoad(persistent.Persistent):
@@ -17,7 +18,7 @@ class AbstractRoad(persistent.Persistent):
 
         self.dx = self.dst.x - self.src.x
         self.dy = self.dst.y - self.src.y
-        self.length = sqrt(self.dx ** 2 + self.dy ** 2)
+        self.length = tools.to_m(sqrt(self.dx ** 2 + self.dy ** 2))
 
     def __repr__(self):
         return '<%s>' % self.label
@@ -31,3 +32,6 @@ class Link(AbstractRoad):
 class Connector(AbstractRoad):
     def __init__(self, label,  src_road, dst_road):
         super(Connector, self).__init__(label, src_road.dst, dst_road.src, src_road.lanes)
+
+        self.src_road = src_road
+        self.dst_road = dst_road
