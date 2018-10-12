@@ -27,7 +27,12 @@ class Engine(QObject):
 
     def play(self):
         self.convert_to_networkx_graph()
-        for dispatcher in self.scene.dispatchers.values():
+
+        for link_label in self.scene.entry_roads:
+            link = self.scene.links[link_label]
+            dispatcher = factory.create_dispatcher(link)
+            self.scene.add_dispatcher(dispatcher)
+
             dispatcher.run(self.clock)
             dispatcher.dispatch_agent.connect(self.agent_dispatched_callback)
 

@@ -29,18 +29,8 @@ class GraphicsScene(QGraphicsScene):
             link = self.scene.db['roads']['links'][link_label]
             self.scene.add_link(link)
 
-            # if link_label in ['link 1']:
-            if link_label in ['link 1', 'link 3']:
-                dispatcher = factory.create_dispatcher(link)
-                self.scene.add_dispatcher(dispatcher)
-
             dlink = factory.create_dlink(link)
             self.addItem(dlink)
-
-            # dnode_src = factory.create_dnode(link.src)
-            # dnode_dst = factory.create_dnode(link.dst)
-            # self.addItem(dnode_src)
-            # self.addItem(dnode_dst)
 
         for conn_label in ['conn 1', 'conn 2']:
             conn = self.scene.db['roads']['connectors'][conn_label]
