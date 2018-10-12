@@ -1,7 +1,7 @@
 from PySide2.QtCore import *
 import weakref
 import collections
-from app.utils import const
+from app.utils import const, tools
 
 
 class AgentManager(QObject):
@@ -36,14 +36,14 @@ class AgentManager(QObject):
         if new_pos > road.length:
 
             try:
-                new_road_label = agent.route.pop(0)
+                new_road_label = agent.route.pop(0)  # get next road in agent's route
                 new_road = self.scene.links[new_road_label] if new_road_label in self.scene.links \
                     else self.scene.connectors[new_road_label]
 
                 self._road_index[road].remove(agent)
                 self._road_index[new_road].append(agent)
 
-            except IndexError:
+            except IndexError:  # agent reached destination
                 self.remove_agent(agent)
                 new_road = None
 
@@ -57,6 +57,14 @@ class AgentManager(QObject):
             agent.move(new_vel, new_acc, new_road, new_pos, new_lane)
             self.agents[agent] = (new_road, new_pos, new_lane)
 
+    def update_agent_neighborhood(self, agent):
+        pass
+
+    def update_agent_sight_distance(self, agent):
+        agent.sight_distance = tools.compute_ssd(agent.vel)
+
     def step(self):
         for agent in list(self.agents):
+            self.update_agent_sight_distance(agent)
+            self.update_agent_neighborhood(agent)
             self.move_agent(agent)

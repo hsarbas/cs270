@@ -23,6 +23,8 @@ class Agent(QObject):
         self.route = route
 
         self.position = dict()
+        self.neighborhood = dict()
+        self.sight_distance = None
 
         self.id_ = hex(_id_counter.next())
 
