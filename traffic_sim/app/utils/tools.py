@@ -91,34 +91,3 @@ def locate_global(road, pos, lane):
     y = ref_y0 + long_dy + lat_dy
 
     return round(x, 0), round(y, 0)
-
-
-def compute_ssd(velocity, grav=const.G, friction=const.F, perc_time=const.PRT, min_ssd=const.MIN_SIGHT_DIST):
-    """
-    Stopping sight distance (SSD) is a near worst-case distance a vehicle driver needs to be able to see in order
-    have room to stop before colliding with an object ahead of the road.
-
-    SSD is composed of the following:
-    (1) Perception-Reaction Distance
-         - the distance it takes for a road user to realize that a reaction is needed due to a road condition
-         - equal to agent's velocity (in m/s) times the perception-reaction time (2.5 seconds)
-    (2) Braking Distance
-        - the distance it takes to complete the maneuver (braking)
-        - equal to agent's velocity  (in m/s) divided by the product of twice the weight force acceleration
-            due to gravity (19.6 m/s^2) and coefficient of friction between car tires and asphalt roads
-
-    :param velocity: Velocity of sensing agent in m/s
-    :param grav: Gravitational acceleration in m/s^2
-    :param friction: Friction coefficient between car tires and road
-    :param perc_time: Perception time in sec
-    :param min_ssd: Minimum SSD in meters
-
-    :return: SSD of the sensing agent in METERS. Minimum of 15.0 meters
-    """
-    braking_dist = velocity ** 2 / (grav * 2.0 * friction)
-    perception_reaction_dist = velocity * perc_time
-    ssd = braking_dist + perception_reaction_dist
-
-    ssd = max(min_ssd, ssd)  # in m
-
-    return ssd
