@@ -164,3 +164,7 @@ class AgentManager(QObject):
             return ((start <= pos <= end or start <= rear <= end) or (rear <= start <= pos and rear <= end <= pos))\
                 and same_lane
         return False
+
+    def reset(self):
+        for agent in list(self.agents):
+            self.remove_agent(agent)

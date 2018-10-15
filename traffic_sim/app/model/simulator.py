@@ -27,6 +27,7 @@ class Engine(QObject):
 
     def play(self):
         self.convert_to_networkx_graph()
+        self.gc.canvas.recolor()
 
         for link_label in self.scene.entry_roads:
             # if link_label in ['link 1']:
@@ -49,6 +50,8 @@ class Engine(QObject):
         self.clock.pause()
 
     def stop(self):
+        self.gc.canvas.recolor(run=False)
+        self.agent_manager.reset()
         self.clock.reset()
 
     def agent_dispatched_callback(self, init_val):

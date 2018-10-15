@@ -1,5 +1,6 @@
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
+from PySide2.QtCore import *
 from app.model.scene import Scene
 from app.controller import factory
 
@@ -55,3 +56,17 @@ class GraphicsScene(QGraphicsScene):
     def remove_dagent(self, dagent):
         self.removeItem(dagent)
         del dagent
+
+    def recolor(self, run=True):
+        if run:
+            for item in self.items():
+                if item.__class__.__name__ == 'DLink':
+                    pen = item.pen()
+                    pen.setBrush(Qt.lightGray)
+                    item.setPen(pen)
+        else:
+            for item in self.items():
+                if item.__class__.__name__ == 'DLink':
+                    pen = item.pen()
+                    pen.setBrush(Qt.darkGray)
+                    item.setPen(pen)
