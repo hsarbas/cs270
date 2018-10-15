@@ -11,6 +11,7 @@ from persistent.mapping import PersistentMapping
 
 from app.controller import factory
 from app.view.dock_widgets.toolboxdockwidget import ToolBoxDockWidget
+from app.view.dock_widgets.resultsdockwidget import ResultsDockWidget
 from app.view.graphicsview import GraphicsView
 from app.model.simulator import Engine
 
@@ -27,6 +28,7 @@ class TrafficSim(QMainWindow):
         self.status_bar = QStatusBar(self)
         self.setStatusBar(self.status_bar)
         self.toolbox = None
+        self.results = None
         self.gc = None
         self.db_root = None
         self.db_connection = None
@@ -144,6 +146,9 @@ class TrafficSim(QMainWindow):
 
         self.toolbox = ToolBoxDockWidget(self, self.gc)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.toolbox)
+
+        self.results = ResultsDockWidget(self, self.gc)
+        self.addDockWidget(Qt.BottomDockWidgetArea, self.results)
 
     def _initialize_db(self):
 

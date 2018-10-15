@@ -9,6 +9,7 @@ class AgentManager(QObject):
 
     agent_created = Signal()  # for observer class
     agent_moved = Signal()  # for observer class
+    agent_deleted = Signal()  # for observer class
 
     def __init__(self, scene, clock):
         super(AgentManager, self).__init__(parent=None)
@@ -26,6 +27,7 @@ class AgentManager(QObject):
         road, _, _ = self.agents[agent]
         self._road_index[road].remove(agent)
         del self.agents[agent]
+        self.agent_deleted.emit()
 
     def move_agent(self, agent):
         road, pos, lane = self.agents[agent]

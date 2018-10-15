@@ -8,7 +8,7 @@ class ToolBoxDockWidget(QDockWidget):
     def __init__(self, parent, gc):
         super(ToolBoxDockWidget, self).__init__(parent=parent)
         self.setWindowTitle('Toolbox')
-        self.setFeatures(QDockWidget.DockWidgetVerticalTitleBar)
+        # self.setFeatures(QDockWidget.DockWidgetVerticalTitleBar)
         self.setFloating(False)
         self.parent = parent
         self.gc = gc
