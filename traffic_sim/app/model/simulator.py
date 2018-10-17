@@ -26,6 +26,7 @@ class Engine(QObject):
     def update_timer(self, time):
         self.parent.status_bar.showMessage('Simulation time: ' + str(time))
         self.agent_manager.update_agent_time_active()
+        self.update_ave_time_speed()
 
     def update_counters(self):
         results = self.parent.results
@@ -48,7 +49,6 @@ class Engine(QObject):
     def step(self):
         self.agent_manager.step()
         self.update_counters()
-        self.update_ave_time_speed()
 
     def play(self):
         self.convert_to_networkx_graph()

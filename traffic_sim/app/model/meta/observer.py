@@ -51,7 +51,7 @@ class TimeSpeedObserver(AbstractObserver):
         self.ave_speed = 0.0
         self.ave_time = 0.0
 
-        self.clock.coarse.connect(self.compute_ave_speed)
+        self.clock.fine.connect(self.compute_ave_speed)
 
     def compute_ave_speed(self):
         total_speed = 0

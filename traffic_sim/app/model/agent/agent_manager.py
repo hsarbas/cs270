@@ -50,7 +50,6 @@ class AgentManager(QObject):
                 new_road = None
 
             new_pos -= road.length
-            dist_traveled = new_pos
         else:
             new_road = road
 
