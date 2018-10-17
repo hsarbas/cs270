@@ -1,5 +1,6 @@
 from PySide2.QtCore import *
 import weakref
+from app.utils import tools
 
 
 class AbstractObserver(QObject):
@@ -43,23 +44,28 @@ class AgentCounter(AbstractObserver):
         self.active = 0
 
 
-class SpeedObserver(AbstractObserver):
+class TimeSpeedObserver(AbstractObserver):
     def __init__(self, agent_manager):
-        super(SpeedObserver, self).__init__(agent_manager)
+        super(TimeSpeedObserver, self).__init__(agent_manager)
 
-        self.ave_speed = 0
+        self.ave_speed = 0.0
+        self.ave_time = 0.0
 
-        self.clock.fine.connect(self.compute_ave_speed)
+        self.clock.coarse.connect(self.compute_ave_speed)
 
     def compute_ave_speed(self):
         total_speed = 0
+        total_time = 0
         num_agents = len(self.agent_manager.agents)
 
         if num_agents:
             for agent in self.agent_manager.agents:
                 total_speed += agent.vel
+                total_time += agent.time_active
 
-            self.ave_speed = total_speed / num_agents
+            self.ave_speed = tools.mps_to_kph(total_speed / num_agents)
+            self.ave_time = total_time / num_agents
 
     def reset(self):
         self.ave_speed = 0
+        self.ave_time = 0

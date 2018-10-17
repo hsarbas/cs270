@@ -6,6 +6,7 @@ import itertools
 _id_counter = itertools.count()
 import random
 
+
 class Agent(QObject):
 
     moved = Signal()
@@ -15,7 +16,8 @@ class Agent(QObject):
         super(Agent, self).__init__(parent=None)
         self.vel = init_vel
         self.acc = init_acc
-        self.vel_max = random.choice([3, 5, 10, 15, 20])
+        self.vel_max = random.choice([3, 5, 10, 15, 23])
+        # self.vel_max = 23
         # self.vel_max = const.DESIRED_VELOCITY
         self.acc_max = const.MAXIMUM_ACCELERATION
         self.dec_max = const.MAXIMUM_DECELERATION
@@ -26,6 +28,7 @@ class Agent(QObject):
         self.position = dict()
         self.neighborhood = dict()
         self.sight_distance = None
+        self.time_active = 0.0
 
         self.id_ = hex(_id_counter.next())
 

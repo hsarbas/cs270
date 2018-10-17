@@ -10,7 +10,7 @@ class Clock(QTimer):
     def __init__(self):
         super(Clock, self).__init__(parent=None)
         self.dt_fine = const.DT
-        self.dt_course = const.DT * 4
+        self.dt_coarse = const.DT * 4
         self.now = 0
 
         self.timeout.connect(self.tick)
@@ -18,8 +18,8 @@ class Clock(QTimer):
     def tick(self):
         self.now += const.DT
 
-        if self.now % self.dt_course == 0:
-            self.coarse.emit(self.now / self.dt_course)
+        if self.now % self.dt_coarse == 0:
+            self.coarse.emit(self.now / self.dt_coarse)
         self.fine.emit()
 
     def run(self):

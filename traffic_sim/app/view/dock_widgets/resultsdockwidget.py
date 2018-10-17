@@ -45,8 +45,8 @@ class ResultsDockWidget(QDockWidget):
         performance = QGroupBox('Measures of performance')
         performance_layout = QGridLayout(performance)
 
-        speed_label = QLabel('Average speed:')
-        time_label = QLabel('Average travel time:')
+        speed_label = QLabel('Average speed (kph):')
+        time_label = QLabel('Average travel time (s):')
 
         self.speed_input = QLineEdit()
         self.time_input = QLineEdit()

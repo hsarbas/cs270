@@ -2,7 +2,7 @@ from app.utils.clock import Clock
 from app.model.agent.agent_manager import AgentManager
 from PySide2.QtCore import *
 from app.controller import factory
-from app.model.meta.observer import AgentCounter, SpeedObserver
+from app.model.meta.observer import AgentCounter, TimeSpeedObserver
 import networkx as nx
 import random
 import copy
@@ -21,10 +21,11 @@ class Engine(QObject):
         self.graph = None
 
         self.agent_counter = AgentCounter(self.agent_manager)
-        self.speed_observer = SpeedObserver(self.agent_manager)
+        self.time_speed_observer = TimeSpeedObserver(self.agent_manager)
 
     def update_timer(self, time):
         self.parent.status_bar.showMessage('Simulation time: ' + str(time))
+        self.agent_manager.update_agent_time_active()
 
     def update_counters(self):
         results = self.parent.results
@@ -36,16 +37,18 @@ class Engine(QObject):
         results.deleted_input.setText(str(deleted))
         results.active_input.setText(str(active))
 
-    def update_ave_speed(self):
+    def update_ave_time_speed(self):
         results = self.parent.results
-        ave_speed = self.speed_observer.ave_speed
+        ave_speed = self.time_speed_observer.ave_speed
+        ave_time = self.time_speed_observer.ave_time
 
         results.speed_input.setText(str(round(ave_speed, 2)))
+        results.time_input.setText(str(round(ave_time, 2)))
 
     def step(self):
         self.agent_manager.step()
         self.update_counters()
-        self.update_ave_speed()
+        self.update_ave_time_speed()
 
     def play(self):
         self.convert_to_networkx_graph()
@@ -76,9 +79,9 @@ class Engine(QObject):
         self.agent_manager.reset()
         self.clock.reset()
         self.agent_counter.reset()
-        self.speed_observer.reset()
+        self.time_speed_observer.reset()
         self.update_counters()
-        self.update_ave_speed()
+        self.update_ave_time_speed()
 
     def agent_dispatched_callback(self, init_val):
         init_vel = init_val['init_vel']

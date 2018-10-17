@@ -2,6 +2,10 @@ import const
 from math import sqrt
 
 
+def mps_to_kph(mps):
+    return round(mps * 3.6, 2)
+
+
 def to_m(px):
     return round(px * const.PX2M_DEFAULT, 2)
 

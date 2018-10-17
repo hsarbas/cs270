@@ -37,7 +37,6 @@ class AgentManager(QObject):
         new_pos = round(pos + new_vel * (const.DT/100), 2)
 
         if new_pos > road.length:
-
             try:
                 new_road_label = agent.route.pop(0)  # get next road in agent's route
                 new_road = self.scene.links[new_road_label] if new_road_label in self.scene.links \
@@ -50,7 +49,8 @@ class AgentManager(QObject):
                 self.remove_agent(agent)
                 new_road = None
 
-            new_pos = 0.0
+            new_pos -= road.length
+            dist_traveled = new_pos
         else:
             new_road = road
 
@@ -71,6 +71,10 @@ class AgentManager(QObject):
             self.update_agent_sight_distance(agent)
             self.update_agent_neighborhood(agent)
             self.move_agent(agent)
+
+    def update_agent_time_active(self):
+        for agent in self.agents:
+            agent.time_active += 1
 
     @staticmethod
     def compute_ssd(velocity, grav=a_const.G, friction=a_const.F, perc_time=a_const.PRT, min_ssd=a_const.MIN_SIGHT_DIST):
