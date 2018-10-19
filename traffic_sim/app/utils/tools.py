@@ -11,7 +11,7 @@ def to_m(px):
 
 
 def to_px(m):
-    return round(int(float(m) / const.PX2M_DEFAULT), 2)
+    return int(float(m) / const.PX2M_DEFAULT)
 
 
 def direction(value):

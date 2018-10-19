@@ -18,8 +18,8 @@ def create_link(label, src_x, src_y, dst_x, dst_y, lanes):
     return Link(label, src, dst, lanes)
 
 
-def create_connector(label, src_road, dst_road):
-    return Connector(label, src_road, dst_road)
+def create_connector(label, src_road, dst_road, conflict_groups):
+    return Connector(label, src_road, dst_road, conflict_groups)
 
 
 def create_dispatcher(road):

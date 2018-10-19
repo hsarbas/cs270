@@ -31,3 +31,8 @@ class Scene(object):
         self.entry_roads = []
         self.exit_roads = []
         self.routes.clear()
+
+    def get_connector_by_conflict_group(self, group, conn):
+        for connector in self.connectors.values():
+            if conn != connector and group in connector.conflict_groups:
+                return connector

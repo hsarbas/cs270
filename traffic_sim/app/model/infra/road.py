@@ -30,8 +30,11 @@ class Link(AbstractRoad):
 
 
 class Connector(AbstractRoad):
-    def __init__(self, label,  src_road, dst_road):
+    def __init__(self, label,  src_road, dst_road, conflict_groups):
         super(Connector, self).__init__(label, src_road.dst, dst_road.src, src_road.lanes)
 
         self.src_road = src_road
         self.dst_road = dst_road
+
+        self.conflict_groups = conflict_groups
+        self.locked = False

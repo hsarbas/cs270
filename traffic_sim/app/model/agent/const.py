@@ -7,10 +7,10 @@ S1 = 0
 MAXIMUM_ACCELERATION = 3.0  # m/s^2
 MAXIMUM_DECELERATION = 1.0  # m/s^2
 
-SAFE_GAP = 1.0  # m
+SAFE_GAP = 2.0  # m
 
 WIDTH = 1.83  # m
-LENGTH = 4.81  # m
+LENGTH = 3  # m
 
 PRT = 2.5  # perception-reaction time
 G = 9.8  # acceleration due to gravity

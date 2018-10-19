@@ -30,7 +30,7 @@ class AgentCounter(AbstractObserver):
         self.agent_manager.agent_created.connect(self.count_new_agent)
         self.agent_manager.agent_deleted.connect(self.count_deleted_agent)
 
-    def count_new_agent(self):
+    def count_new_agent(self, params):
         self.created += 1
         self.active += 1
 

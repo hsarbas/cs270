@@ -7,7 +7,7 @@ import const as a_const
 
 class AgentManager(QObject):
 
-    agent_created = Signal()  # for observer class
+    agent_created = Signal(dict)  # for observer class
     agent_moved = Signal()  # for observer class
     agent_deleted = Signal()  # for observer class
 
@@ -21,7 +21,7 @@ class AgentManager(QObject):
     def add_agent(self, agent, road, pos, lane):
         self.agents[agent] = (road, pos, lane)
         self._road_index[road].append(agent)
-        self.agent_created.emit()
+        self.agent_created.emit(dict(agent=agent))
 
     def remove_agent(self, agent):
         road, _, _ = self.agents[agent]
@@ -56,7 +56,13 @@ class AgentManager(QObject):
         new_lane = lane
 
         if new_road:
-            agent.move(new_vel, new_acc, new_road, new_pos, new_lane)
+            try:
+                next_road_label = agent.route[0]
+                next_conflict = self.scene.connectors[next_road_label]
+            except (IndexError, KeyError):
+                next_conflict = None
+
+            agent.move(new_vel, new_acc, new_road, new_pos, new_lane, next_conflict)
             self.agents[agent] = (new_road, new_pos, new_lane)
 
     def update_agent_neighborhood(self, agent):

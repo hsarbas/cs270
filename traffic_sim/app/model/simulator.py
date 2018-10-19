@@ -3,6 +3,7 @@ from app.model.agent.agent_manager import AgentManager
 from PySide2.QtCore import *
 from app.controller import factory
 from app.model.meta.observer import AgentCounter, TimeSpeedObserver
+from app.model.meta.conflict_manager import ConflictManager
 import networkx as nx
 import random
 import copy
@@ -18,6 +19,7 @@ class Engine(QObject):
         self.gc = gc
         self.scene = gc.canvas.scene
         self.agent_manager = AgentManager(self.scene, self.clock)
+        self.conflict_manager = ConflictManager(self.clock, self.scene, self.agent_manager)
         self.graph = None
 
         self.agent_counter = AgentCounter(self.agent_manager)

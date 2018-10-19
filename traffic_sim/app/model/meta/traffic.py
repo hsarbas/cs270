@@ -14,8 +14,9 @@ class Dispatcher(QObject):
         self.flow_rate = None
 
     def run(self, clock):
-        self.flow_rate = random.choice([6, 9, 12])
-        # self.flow_rate = 50
+        self.flow_rate = random.choice([3, 6])
+        # self.flow_rate = random.choice([6, 9, 12])
+        # self.flow_rate = 10
 
         if clock:
             self.clock = clock
