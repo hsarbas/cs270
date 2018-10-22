@@ -172,12 +172,21 @@ class TrafficSim(QMainWindow):
             transaction.commit()
 
     def _populate_db(self):
-        link_1 = factory.create_link('link 1', 100, 100, 590, 100, 2)
-        link_2 = factory.create_link('link 2', 650, 100, 1000, 100, 2)
-        link_3 = factory.create_link('link 3', 200, 300, 600, 125, 2)
+        self._populate_merging()
+        self._populate_diverging()
+        self._populate_crossing()
+        self._populate_t_intersection()
+        self._populate_y_intersection()
+        self._populate_roundabout()
+        self._populate_four_legged()
 
-        conn_1_2 = factory.create_connector('conn 1', link_1, link_2, [1])  # conn_from_to
-        conn_3_2 = factory.create_connector('conn 2', link_3, link_2, [1])
+    def _populate_merging(self):
+        link_1 = factory.create_link('m link 1', 100, 100, 590, 100, 2)
+        link_2 = factory.create_link('m link 2', 650, 100, 1000, 100, 2)
+        link_3 = factory.create_link('m link 3', 200, 300, 600, 125, 2)
+
+        conn_1_2 = factory.create_connector('m conn 1', link_1, link_2, [1])  # conn_from_to
+        conn_3_2 = factory.create_connector('m conn 2', link_3, link_2, [1])
 
         self.db_root['roads']['links'][link_1.label] = link_1
         self.db_root['roads']['links'][link_2.label] = link_2
@@ -187,6 +196,24 @@ class TrafficSim(QMainWindow):
         self.db_root['roads']['connectors'][conn_3_2.label] = conn_3_2
 
         transaction.commit()
+
+    def _populate_diverging(self):
+        pass
+
+    def _populate_crossing(self):
+        pass
+
+    def _populate_t_intersection(self):
+        pass
+
+    def _populate_y_intersection(self):
+        pass
+
+    def _populate_roundabout(self):
+        pass
+
+    def _populate_four_legged(self):
+        pass
 
     def _close_db(self):
         if self.db_connection:

@@ -97,23 +97,39 @@ class IntersectionTypes(QWidget):
         t_intersection_btn.setText('T intersection')
         t_intersection_btn.setStatusTip('Create a T intersection')
         t_intersection_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        t_intersection_btn.clicked.connect(self.t_intersection_btn_clicked)
 
         y_intersection_btn = QToolButton()
         y_intersection_btn.setText('Y intersection')
         y_intersection_btn.setStatusTip('Create a Y intersection')
         y_intersection_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        y_intersection_btn.clicked.connect(self.y_intersection_btn_clicked)
 
         roundabout_btn = QToolButton()
         roundabout_btn.setText('Roundabout')
         roundabout_btn.setStatusTip('Create a roundabout')
         roundabout_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        roundabout_btn.clicked.connect(self.roundabout_btn_clicked)
 
-        four_leg_intersection = QToolButton()
-        four_leg_intersection.setText('4-legged intersection')
-        four_leg_intersection.setStatusTip('Create a 4-legged intersection')
-        four_leg_intersection.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        four_legged_btn = QToolButton()
+        four_legged_btn.setText('4-legged intersection')
+        four_legged_btn.setStatusTip('Create a 4-legged intersection')
+        four_legged_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        four_legged_btn.clicked.connect(self.four_legged_btn_clicked)
 
         btn_layout.addWidget(t_intersection_btn, 0, 0)
         btn_layout.addWidget(y_intersection_btn, 1, 0)
         btn_layout.addWidget(roundabout_btn, 2, 0)
-        btn_layout.addWidget(four_leg_intersection, 3, 0)
+        btn_layout.addWidget(four_legged_btn, 3, 0)
+
+    def t_intersection_btn_clicked(self):
+        self.gc.canvas.add_t_intersection()
+
+    def y_intersection_btn_clicked(self):
+        self.gc.canvas.add_y_intersection()
+
+    def roundabout_btn_clicked(self):
+        self.gc.canvas.add_roundabout()
+
+    def four_legged_btn_clicked(self):
+        self.gc.canvas.add_four_legged()

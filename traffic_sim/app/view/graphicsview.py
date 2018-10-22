@@ -26,14 +26,14 @@ class GraphicsScene(QGraphicsScene):
         self.scene.clear()
         self.clear()
 
-        for link_label in ['link 1', 'link 2', 'link 3']:
+        for link_label in ['m link 1', 'm link 2', 'm link 3']:
             link = self.scene.db['roads']['links'][link_label]
             self.scene.add_link(link)
 
             dlink = factory.create_dlink(link)
             self.addItem(dlink)
 
-        for conn_label in ['conn 1', 'conn 2']:
+        for conn_label in ['m conn 1', 'm conn 2']:
             conn = self.scene.db['roads']['connectors'][conn_label]
             self.scene.add_connector(conn)
 
@@ -45,6 +45,22 @@ class GraphicsScene(QGraphicsScene):
         self.clear()
 
     def add_crossing_conflict(self):
+        self.scene.clear()
+        self.clear()
+
+    def add_t_intersection(self):
+        self.scene.clear()
+        self.clear()
+
+    def add_y_intersection(self):
+        self.scene.clear()
+        self.clear()
+
+    def add_roundabout(self):
+        self.scene.clear()
+        self.clear()
+
+    def add_four_legged(self):
         self.scene.clear()
         self.clear()
 
