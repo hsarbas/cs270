@@ -10,6 +10,8 @@ class GraphicsView(QGraphicsView):
         super(GraphicsView, self).__init__(parent=parent)
         self.setDragMode(QGraphicsView.ScrollHandDrag)
         self.setRenderHint(QPainter.Antialiasing)
+        self.parent = parent
+        self.setMouseTracking(True)
 
         self.canvas = GraphicsScene(parent, db)
         self.canvas.setSceneRect(0, 0, 10000, 10000)
@@ -21,6 +23,11 @@ class GraphicsScene(QGraphicsScene):
     def __init__(self, parent, db):
         super(GraphicsScene, self).__init__(parent=parent)
         self.scene = Scene(db)
+        self.parent = parent
+
+    def mouseMoveEvent(self, event):
+        self.parent.status_bar.showMessage('(' + str(event.scenePos().x()) + ' , ' + str(event.scenePos().y()) + ')')
+        super(GraphicsScene, self).mouseMoveEvent(event)
 
     def add_merging_conflict(self):
         self.scene.clear()

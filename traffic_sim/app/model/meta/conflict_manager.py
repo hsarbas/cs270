@@ -21,12 +21,9 @@ class ConflictManager(QObject):
             params['agent'].intention_exit.connect(self._agent_intention_exit_callback)
 
     # def _clock_signal_callback(self):
-    #     for value in self.conflict_zones.values():
-    #         if value:
-    #             zone = value[0]
-    #
-    #             if not self.agent_manager.members(zone.road):
-    #                 zone.locked = False
+    #     for connector in self.scene.connectors.values():
+    #         partner_road = self.scene.get_connector_by_conflict_group(connector.conflict_groups, connector)
+    #         if not
 
     def _agent_intention_enter_callback(self, params):
         road = params['road']
@@ -35,8 +32,16 @@ class ConflictManager(QObject):
 
         for group in conflict_groups:
             partner_road = self.scene.get_connector_by_conflict_group(group, road)
-            if not self.agent_manager.members(partner_road) and not road.locked:
-                partner_road.locked = True
+            if partner_road:
+                if not self.agent_manager.members(partner_road) and road.locked:
+                    road.locked = False
+                    partner_road.locked = True
+                elif not self.agent_manager.members(partner_road) and not road.locked:
+                    road.locked = False
+                    partner_road.locked = True
+                elif self.agent_manager.members(partner_road):
+                    road.locked = True
+                    partner_road.locked = False
                 transaction.commit()
 
     def _agent_intention_exit_callback(self, params):
@@ -45,5 +50,6 @@ class ConflictManager(QObject):
 
         for group in conflict_groups:
             partner_road = self.scene.get_connector_by_conflict_group(group, road)
-            partner_road.locked = False
-            transaction.commit()
+            if partner_road:
+                partner_road.locked = False
+                transaction.commit()

@@ -198,7 +198,21 @@ class TrafficSim(QMainWindow):
         transaction.commit()
 
     def _populate_diverging(self):
-        pass
+        link_1 = factory.create_link('d link 1', 100, 100, 500, 100, 2)
+        link_2 = factory.create_link('d link 2', 560, 100, 1000, 100, 2)
+        link_3 = factory.create_link('d link 3', 560, 160, 930, 350, 2)
+
+        conn_1_2 = factory.create_connector('d conn 1', link_1, link_2, [1])  # conn_from_to
+        conn_1_3 = factory.create_connector('d conn 2', link_1, link_3, [1])
+
+        self.db_root['roads']['links'][link_1.label] = link_1
+        self.db_root['roads']['links'][link_2.label] = link_2
+        self.db_root['roads']['links'][link_3.label] = link_3
+
+        self.db_root['roads']['connectors'][conn_1_2.label] = conn_1_2
+        self.db_root['roads']['connectors'][conn_1_3.label] = conn_1_3
+
+        transaction.commit()
 
     def _populate_crossing(self):
         pass
@@ -210,9 +224,27 @@ class TrafficSim(QMainWindow):
         pass
 
     def _populate_roundabout(self):
-        link_1 = factory.create_link('r link 1', 500, 100, 700, 100, 2)
+        link_1 = factory.create_link('r link 1', 20, 270, 200, 270, 2)
+        link_2 = factory.create_link('r link 2', 240, 300, 330, 400, 2)
+        link_3 = factory.create_link('r link 3', 350, 445, 350, 600, 2)
+        link_4 = factory.create_link('r link 4', 390, 600, 390, 445, 2)
+        link_5 = factory.create_link('r link 5', 410, 400, 500, 300, 2)
+
+        conn_1_2 = factory.create_connector('r conn 1', link_1, link_2, [1])
+        conn_2_3 = factory.create_connector('r conn 2', link_2, link_3, [2])
+        conn_4_5 = factory.create_connector('r conn 3', link_4, link_5, [3])
+        conn_2_5 = factory.create_connector('r conn 4', link_2, link_5, [2, 3])
 
         self.db_root['roads']['links'][link_1.label] = link_1
+        self.db_root['roads']['links'][link_2.label] = link_2
+        self.db_root['roads']['links'][link_3.label] = link_3
+        self.db_root['roads']['links'][link_4.label] = link_4
+        self.db_root['roads']['links'][link_5.label] = link_5
+
+        self.db_root['roads']['connectors'][conn_1_2.label] = conn_1_2
+        self.db_root['roads']['connectors'][conn_2_3.label] = conn_2_3
+        self.db_root['roads']['connectors'][conn_4_5.label] = conn_4_5
+        self.db_root['roads']['connectors'][conn_2_5.label] = conn_2_5
         transaction.commit()
 
     def _populate_four_legged(self):
