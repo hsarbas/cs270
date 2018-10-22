@@ -21,7 +21,7 @@ class Agent(QObject):
         self.acc = init_acc
         # self.vel_max = random.choice([3, 5, 10, 15, 23])
         # self.vel_max = random.choice([1, 23])
-        self.vel_max = 5
+        self.vel_max = 10
         # self.vel_max = const.DESIRED_VELOCITY
         self.acc_max = const.MAXIMUM_ACCELERATION
         self.dec_max = const.MAXIMUM_DECELERATION

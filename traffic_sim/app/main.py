@@ -224,27 +224,57 @@ class TrafficSim(QMainWindow):
         pass
 
     def _populate_roundabout(self):
-        link_1 = factory.create_link('r link 1', 20, 270, 200, 270, 2)
-        link_2 = factory.create_link('r link 2', 240, 300, 330, 400, 2)
-        link_3 = factory.create_link('r link 3', 350, 445, 350, 600, 2)
-        link_4 = factory.create_link('r link 4', 390, 600, 390, 445, 2)
-        link_5 = factory.create_link('r link 5', 410, 400, 500, 300, 2)
+        link_1 = factory.create_link('r link 1', 50, 320, 250, 320, 2)
+        link_2 = factory.create_link('r link 2', 290, 350, 380, 450, 2)
+        link_3 = factory.create_link('r link 3', 400, 495, 400, 650, 2)
+        link_4 = factory.create_link('r link 4', 440, 650, 440, 495, 2)
+        link_5 = factory.create_link('r link 5', 460, 450, 550, 350, 2)
+        link_6 = factory.create_link('r link 6', 590, 320, 770, 320, 2)
+        link_7 = factory.create_link('r link 7', 770, 280, 590, 280, 2)
+        link_8 = factory.create_link('r link 8', 550, 260, 460, 190, 2)
+        link_9 = factory.create_link('r link 9', 440, 140, 440, 10, 2)
+        link_10 = factory.create_link('r link 10', 400, 10, 400, 140, 2)
+        link_11 = factory.create_link('r link 11', 390, 190, 290, 270, 2)
+        link_12 = factory.create_link('r link 12', 250, 280, 50, 280, 2)
 
         conn_1_2 = factory.create_connector('r conn 1', link_1, link_2, [1])
         conn_2_3 = factory.create_connector('r conn 2', link_2, link_3, [2])
         conn_4_5 = factory.create_connector('r conn 3', link_4, link_5, [3])
         conn_2_5 = factory.create_connector('r conn 4', link_2, link_5, [2, 3])
+        conn_5_6 = factory.create_connector('r conn 5', link_5, link_6, [4])
+        conn_7_8 = factory.create_connector('r conn 6', link_7, link_8, [5])
+        conn_5_8 = factory.create_connector('r conn 7', link_5, link_8, [4, 5])
+        conn_8_9 = factory.create_connector('r conn 8', link_8, link_9, [6])
+        conn_10_11 = factory.create_connector('r conn 9', link_10, link_11, [7])
+        conn_8_11 = factory.create_connector('r conn 10', link_8, link_11, [6, 7])
+        conn_11_12 = factory.create_connector('r conn 11', link_11, link_12, [8])
+        conn_11_2 = factory.create_connector('r conn 12', link_11, link_2, [1, 8])
 
         self.db_root['roads']['links'][link_1.label] = link_1
         self.db_root['roads']['links'][link_2.label] = link_2
         self.db_root['roads']['links'][link_3.label] = link_3
         self.db_root['roads']['links'][link_4.label] = link_4
         self.db_root['roads']['links'][link_5.label] = link_5
+        self.db_root['roads']['links'][link_6.label] = link_6
+        self.db_root['roads']['links'][link_7.label] = link_7
+        self.db_root['roads']['links'][link_8.label] = link_8
+        self.db_root['roads']['links'][link_9.label] = link_9
+        self.db_root['roads']['links'][link_10.label] = link_10
+        self.db_root['roads']['links'][link_11.label] = link_11
+        self.db_root['roads']['links'][link_12.label] = link_12
 
         self.db_root['roads']['connectors'][conn_1_2.label] = conn_1_2
         self.db_root['roads']['connectors'][conn_2_3.label] = conn_2_3
         self.db_root['roads']['connectors'][conn_4_5.label] = conn_4_5
         self.db_root['roads']['connectors'][conn_2_5.label] = conn_2_5
+        self.db_root['roads']['connectors'][conn_5_6.label] = conn_5_6
+        self.db_root['roads']['connectors'][conn_7_8.label] = conn_7_8
+        self.db_root['roads']['connectors'][conn_5_8.label] = conn_5_8
+        self.db_root['roads']['connectors'][conn_8_9.label] = conn_8_9
+        self.db_root['roads']['connectors'][conn_10_11.label] = conn_10_11
+        self.db_root['roads']['connectors'][conn_8_11.label] = conn_8_11
+        self.db_root['roads']['connectors'][conn_11_12.label] = conn_11_12
+        self.db_root['roads']['connectors'][conn_11_2.label] = conn_11_2
         transaction.commit()
 
     def _populate_four_legged(self):
