@@ -25,44 +25,55 @@ class GraphicsScene(QGraphicsScene):
     def add_merging_conflict(self):
         self.scene.clear()
         self.clear()
-
-        for link_label in ['m link 1', 'm link 2', 'm link 3']:
-            link = self.scene.db['roads']['links'][link_label]
-            self.scene.add_link(link)
-
-            dlink = factory.create_dlink(link)
-            self.addItem(dlink)
-
-        for conn_label in ['m conn 1', 'm conn 2']:
-            conn = self.scene.db['roads']['connectors'][conn_label]
-            self.scene.add_connector(conn)
-
-            dconn = factory.create_dconnector(conn)
-            self.addItem(dconn)
+        self._add_roads('m ')
 
     def add_diverging_conflict(self):
         self.scene.clear()
         self.clear()
+        self._add_roads('d ')
 
     def add_crossing_conflict(self):
         self.scene.clear()
         self.clear()
+        self._add_roads('c ')
 
     def add_t_intersection(self):
         self.scene.clear()
         self.clear()
+        self._add_roads('t ')
 
     def add_y_intersection(self):
         self.scene.clear()
         self.clear()
+        self._add_roads('y ')
 
     def add_roundabout(self):
         self.scene.clear()
         self.clear()
 
+        self._add_roads('r ')
+
     def add_four_legged(self):
         self.scene.clear()
         self.clear()
+        self._add_roads('f ')
+
+    def _add_roads(self, identifier):
+        for link_label in self.scene.db['roads']['links']:
+            if link_label.startswith(identifier):
+                link = self.scene.db['roads']['links'][link_label]
+                self.scene.add_link(link)
+
+                dlink = factory.create_dlink(link)
+                self.addItem(dlink)
+
+        for conn_label in self.scene.db['roads']['connectors']:
+            if conn_label.startswith(identifier):
+                conn = self.scene.db['roads']['connectors'][conn_label]
+                self.scene.add_connector(conn)
+
+                dconn = factory.create_dconnector(conn)
+                self.addItem(dconn)
 
     def add_dagent(self, agent):
         if agent:

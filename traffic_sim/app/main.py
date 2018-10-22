@@ -210,7 +210,10 @@ class TrafficSim(QMainWindow):
         pass
 
     def _populate_roundabout(self):
-        pass
+        link_1 = factory.create_link('r link 1', 500, 100, 700, 100, 2)
+
+        self.db_root['roads']['links'][link_1.label] = link_1
+        transaction.commit()
 
     def _populate_four_legged(self):
         pass
