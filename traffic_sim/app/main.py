@@ -172,9 +172,9 @@ class TrafficSim(QMainWindow):
             transaction.commit()
 
     def _populate_db(self):
-        link_1 = factory.create_link('link 1', 100, 100, 590, 100, 1)
-        link_2 = factory.create_link('link 2', 650, 100, 1000, 100, 1)
-        link_3 = factory.create_link('link 3', 200, 300, 600, 125, 1)
+        link_1 = factory.create_link('link 1', 100, 100, 590, 100, 2)
+        link_2 = factory.create_link('link 2', 650, 100, 1000, 100, 2)
+        link_3 = factory.create_link('link 3', 200, 300, 600, 125, 2)
 
         conn_1_2 = factory.create_connector('conn 1', link_1, link_2, [1])  # conn_from_to
         conn_3_2 = factory.create_connector('conn 2', link_3, link_2, [1])

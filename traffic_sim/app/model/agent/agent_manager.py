@@ -126,15 +126,16 @@ class AgentManager(QObject):
         section.remove(agent)
 
         for _agent in section:
-            _, pos, _ = self.agents[_agent]
+            _, pos, lane = self.agents[_agent]
             gap_front = round(pos - _agent.length - my_pos, 2)
-            if neighborhood['front']:
-                if pos < neighborhood['front'].position['pos']:
+            if my_lane == lane:
+                if neighborhood['front']:
+                    if pos < neighborhood['front'].position['pos']:
+                        neighborhood['front'] = _agent
+                        neighborhood['gap_front'] = gap_front
+                else:
                     neighborhood['front'] = _agent
                     neighborhood['gap_front'] = gap_front
-            else:
-                neighborhood['front'] = _agent
-                neighborhood['gap_front'] = gap_front
 
         # from different road
         if front_reach > my_road.length and agent.route:
@@ -143,15 +144,16 @@ class AgentManager(QObject):
             section = self.members(_road, start=0, end=min(front_reach - my_road.length, _road.length))
 
             for _agent in section:
-                _, pos, _ = self.agents[_agent]
+                _, pos, lane = self.agents[_agent]
                 gap_front = round(my_road.length + pos - _agent.length - my_pos, 2)
-                if neighborhood['front']:
-                    if pos < neighborhood['front'].position['pos'] and gap_front < neighborhood['gap_front']:
+                if my_lane == lane:
+                    if neighborhood['front']:
+                        if pos < neighborhood['front'].position['pos'] and gap_front < neighborhood['gap_front']:
+                            neighborhood['front'] = _agent
+                            neighborhood['gap_front'] = gap_front
+                    else:
                         neighborhood['front'] = _agent
                         neighborhood['gap_front'] = gap_front
-                else:
-                    neighborhood['front'] = _agent
-                    neighborhood['gap_front'] = gap_front
 
         return neighborhood
 
