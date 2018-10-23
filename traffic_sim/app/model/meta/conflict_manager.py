@@ -9,21 +9,14 @@ class ConflictManager(QObject):
         super(ConflictManager, self).__init__(parent=None)
         self.clock = clock
         self.scene = scene
-        # self.conflict_zones = scene.conflict_zones
         self.agent_manager = agent_manager
 
         self.agent_manager.agent_created.connect(self._new_agent_callback)
-        # self.clock.fine.connect(self._clock_signal_callback)
 
     def _new_agent_callback(self, params):
         if 'agent' in params:
             params['agent'].intention_enter.connect(self._agent_intention_enter_callback)
             params['agent'].intention_exit.connect(self._agent_intention_exit_callback)
-
-    # def _clock_signal_callback(self):
-    #     for connector in self.scene.connectors.values():
-    #         partner_road = self.scene.get_connector_by_conflict_group(connector.conflict_groups, connector)
-    #         if not
 
     def _agent_intention_enter_callback(self, params):
         road = params['road']
