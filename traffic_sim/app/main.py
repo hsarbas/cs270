@@ -250,7 +250,35 @@ class TrafficSim(QMainWindow):
         Create T-intersection road network components
         """
 
-        pass
+        link_1 = factory.create_link('t link 1', 50, 120, 350, 120, 2)
+        link_2 = factory.create_link('t link 2', 375, 150, 375, 500, 2)
+        link_3 = factory.create_link('t link 3', 415, 500, 415, 150, 2)
+        link_4 = factory.create_link('t link 4', 440, 120, 740, 120, 2)
+        link_5 = factory.create_link('t link 5', 740, 80, 440, 80, 2)
+        link_6 = factory.create_link('t link 6', 350, 80, 50, 80, 2)
+
+        conn_1_2 = factory.create_connector('t conn 1', link_1, link_2, [1, 9])
+        conn_3_4 = factory.create_connector('t conn 2', link_3, link_4, [2, 4])
+        conn_1_4 = factory.create_connector('t conn 3', link_1, link_4, [1, 2, 5, 8])
+        conn_5_6 = factory.create_connector('t conn 4', link_5, link_6, [3, 6])
+        conn_3_6 = factory.create_connector('t conn 5', link_3, link_6, [4, 5, 6, 7])
+        conn_5_2 = factory.create_connector('t conn 6', link_5, link_2, [3, 7, 8, 9])
+
+        self.db_root['roads']['links'][link_1.label] = link_1
+        self.db_root['roads']['links'][link_2.label] = link_2
+        self.db_root['roads']['links'][link_3.label] = link_3
+        self.db_root['roads']['links'][link_4.label] = link_4
+        self.db_root['roads']['links'][link_5.label] = link_5
+        self.db_root['roads']['links'][link_6.label] = link_6
+
+        self.db_root['roads']['connectors'][conn_1_2.label] = conn_1_2
+        self.db_root['roads']['connectors'][conn_3_4.label] = conn_3_4
+        self.db_root['roads']['connectors'][conn_1_4.label] = conn_1_4
+        self.db_root['roads']['connectors'][conn_5_6.label] = conn_5_6
+        self.db_root['roads']['connectors'][conn_3_6.label] = conn_3_6
+        self.db_root['roads']['connectors'][conn_5_2.label] = conn_5_2
+
+        transaction.commit()
 
     def _populate_y_intersection(self):
         """

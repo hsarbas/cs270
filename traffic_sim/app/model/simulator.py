@@ -99,14 +99,8 @@ class Engine(QObject):
         self.convert_to_networkx_graph()
         self.gc.canvas.recolor()
 
+        # for link_label in ['t link 1', 't link 3']:
         for link_label in self.scene.entry_roads:
-            # if link_label in ['link 1']:
-            #     link = self.scene.links[link_label]
-            #     dispatcher = factory.create_dispatcher(link, self.agent_manager)
-            #     self.scene.add_dispatcher(dispatcher)
-            #
-            #     dispatcher.run(self.clock)
-            #     dispatcher.dispatch_agent.connect(self.agent_dispatched_callback)
             link = self.scene.links[link_label]
             dispatcher = factory.create_dispatcher(link, self.agent_manager)
             self.scene.add_dispatcher(dispatcher)

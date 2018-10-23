@@ -50,16 +50,15 @@ class ConflictManager(QObject):
         for group in conflict_groups:
             partner_road = self.scene.get_connector_by_conflict_group(group, road)
             if partner_road:
-                if not self.agent_manager.members(partner_road) and road.locked:
-                    road.locked = False
-                    partner_road.locked = True
-                elif not self.agent_manager.members(partner_road) and not road.locked:
-                    road.locked = False
-                    partner_road.locked = True
-                elif self.agent_manager.members(partner_road):
+                if self.agent_manager.members(partner_road):
                     road.locked = True
                     partner_road.locked = False
-                transaction.commit()
+                    break
+                else:
+                    road.locked = False
+                    partner_road.locked = True
+                    
+        transaction.commit()
 
     def _agent_intention_exit_callback(self, params):
         """

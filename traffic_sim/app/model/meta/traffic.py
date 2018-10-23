@@ -37,7 +37,7 @@ class Dispatcher(QObject):
         :return:
         """
 
-        self.flow_rate = 10
+        self.flow_rate = 5
         # self.flow_rate = random.choice([3, 5, 7, 9])
 
         if clock:
