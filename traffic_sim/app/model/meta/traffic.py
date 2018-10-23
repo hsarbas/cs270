@@ -1,5 +1,6 @@
 from PySide2.QtCore import *
 import random
+from app.model.agent import const
 
 
 class Dispatcher(QObject):
@@ -12,17 +13,19 @@ class Dispatcher(QObject):
 
     dispatch_agent = Signal(dict)
 
-    def __init__(self, road):
+    def __init__(self, road, agent_manager):
         """
         Initialize Dispatcher
 
         :param road: road to which the dispatcher is attached; Road object
+        :param agent_manager: AgentManager object
         flow_rate: dispatch agent every x seconds
         """
 
         super(Dispatcher, self).__init__(parent=None)
         self.road = road
         self.clock = None
+        self.agent_manager = agent_manager
 
         self.flow_rate = None
 
@@ -54,11 +57,26 @@ class Dispatcher(QObject):
             lanes = []
             for lane in range(self.road.lanes):
                 lanes.append(lane)
+            lane = random.choice(lanes)
 
-            init_val = dict(init_vel=0.0,
-                            init_acc=0.0,
-                            road=self.road,
-                            pos=0.0,
-                            lane=random.choice(lanes))
+            if self.spatial_clearance(lane):
+                init_val = dict(init_vel=0.0,
+                                init_acc=0.0,
+                                road=self.road,
+                                pos=0.0,
+                                lane=lane)
 
-            self.dispatch_agent.emit(init_val)
+                self.dispatch_agent.emit(init_val)
+
+    def spatial_clearance(self, lane):
+        """
+        Determine if there is enough clearance for a given lane to dispatch new agent
+
+        :param lane:
+        :return: True if enough clearance; otherwise False
+        """
+
+        if self.agent_manager.members(self.road, start=0.0, end=const.DISPATCH_REACH, lane=lane):
+            return False
+
+        return True

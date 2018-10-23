@@ -18,3 +18,4 @@ F = 0.40  # coefficient of friction between car tire and asphalt
 MIN_SIGHT_DIST = 15.0  # minimum sight distance, in meters
 
 LARGE_NUMBER = 10000
+DISPATCH_REACH = 5.0  # m

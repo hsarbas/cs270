@@ -22,8 +22,8 @@ def create_connector(label, src_road, dst_road, conflict_groups):
     return Connector(label, src_road, dst_road, conflict_groups)
 
 
-def create_dispatcher(road):
-    return Dispatcher(road)
+def create_dispatcher(road, agent_manager):
+    return Dispatcher(road, agent_manager)
 
 
 def create_dnode(node):
