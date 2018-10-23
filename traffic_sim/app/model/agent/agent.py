@@ -4,10 +4,16 @@ import const
 
 import itertools
 _id_counter = itertools.count()
-import random
 
 
 class Agent(QObject):
+    """
+    moved: signal fired by agent after updating its values (received by DAgent)
+    killed: signal fired by agent after exiting road network (received by DAgent)
+
+    intention_enter: signal fired by agent before entering an intersection (received by ConflictManager)
+    intention_exit: signal fired by agent before exiting an intersection (received by ConflictManager)
+    """
 
     moved = Signal()
     killed = Signal()
@@ -16,13 +22,18 @@ class Agent(QObject):
     intention_exit = Signal(dict)
 
     def __init__(self, init_vel, init_acc, route):
+        """
+        Initialize agent
+
+        :param init_vel: initial velocity (m/s)
+        :param init_acc: initial acceleration (m/s^2)
+        :param route: route (list of road labels to be traversed by agent)
+        """
+
         super(Agent, self).__init__(parent=None)
         self.vel = init_vel
         self.acc = init_acc
-        # self.vel_max = random.choice([3, 5, 10, 15, 23])
-        # self.vel_max = random.choice([1, 23])
-        self.vel_max = 10
-        # self.vel_max = const.DESIRED_VELOCITY
+        self.vel_max = const.DESIRED_VELOCITY
         self.acc_max = const.MAXIMUM_ACCELERATION
         self.dec_max = const.MAXIMUM_DECELERATION
         self.length = const.LENGTH
@@ -38,6 +49,14 @@ class Agent(QObject):
         self.id_ = hex(_id_counter.next())
 
     def deliberate_acc(self):
+        """
+        Determine agent acceleration
+
+        acc_idm: acceleration due to car-following
+        acc_conflict: acceleration due to intersection
+
+        :return: minimum of acc_idm and acc_conflict
+        """
 
         acc_list = []
 
@@ -55,6 +74,11 @@ class Agent(QObject):
         return min(acc_list)
 
     def react_to_conflict(self):
+        """
+        Handles agent reaction to conflicts and intersections
+
+        :return: acceleration due to intersection
+        """
         acc = const.LARGE_NUMBER
 
         if self.next_conflict:
@@ -66,14 +90,25 @@ class Agent(QObject):
                                                               0.0,
                                                               dist_from_conflict)
 
-        else:
-            if 'road' in self.position and self.position['road'].__class__.__name__ == 'Connector':
-                if self.position['road'].length - self.position['pos'] <= 2.0:
-                    self.intention_exit.emit(dict(road=self.position['road']))
+        # else:
+        #     if 'road' in self.position and self.position['road'].__class__.__name__ == 'Connector':
+        #         if self.position['road'].length - self.position['pos'] <= 2.0:
+        #             self.intention_exit.emit(dict(road=self.position['road']))
 
         return acc
 
     def move(self, vel, acc, road, pos, lane, next_conflict):
+        """
+        Update agent values
+
+        :param vel: new velocity (m/s)
+        :param acc: new acceleration (m/s^2)
+        :param road: new road (road object)
+        :param pos: new position relative to start of road (m)
+        :param lane: new lane
+        :param next_conflict: conflict/intersection in nearest to agent
+        """
+
         self.vel = vel
         self.acc = acc
         self.position['road'] = road
@@ -84,7 +119,14 @@ class Agent(QObject):
         self.moved.emit()
 
     def __repr__(self):
+        """
+        Agent representation when print method is called
+        """
         return '<%s: %s>' % (self.__class__.__name__, self.id_)
 
     def __del__(self):
+        """
+        Delete agent object
+        """
+
         self.killed.emit()

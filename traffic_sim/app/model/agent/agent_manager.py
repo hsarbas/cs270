@@ -6,12 +6,26 @@ import const as a_const
 
 
 class AgentManager(QObject):
+    """
+    agent_created: signal fired when a new agent is created (received by AgentCounter)
+    agent_moved: signal fired when an agent's values are updated
+    agent_deleted: signal fired when an agent is deleted (received by AgentCounter)
+    """
 
-    agent_created = Signal(dict)  # for observer class
-    agent_moved = Signal()  # for observer class
-    agent_deleted = Signal()  # for observer class
+    agent_created = Signal(dict)
+    agent_moved = Signal()
+    agent_deleted = Signal()
 
     def __init__(self, scene, clock):
+        """
+        Initialize agent manager
+
+        :param scene: Scene object
+        :param clock: Clock object
+
+        self.agents: weak key dictionary; contains active agents
+        """
+
         super(AgentManager, self).__init__(parent=None)
         self.agents = weakref.WeakKeyDictionary()
         self.scene = scene
@@ -19,17 +33,38 @@ class AgentManager(QObject):
         self._road_index = collections.defaultdict(list)
 
     def add_agent(self, agent, road, pos, lane):
+        """
+        Add agent to agents dictionary
+
+        :param agent: Agent object
+        :param road: Road object
+        :param pos: agent position
+        :param lane: agent lane
+        """
+
         self.agents[agent] = (road, pos, lane)
         self._road_index[road].append(agent)
         self.agent_created.emit(dict(agent=agent))
 
     def remove_agent(self, agent):
+        """
+        Remove agent from agents dictionary
+
+        :param agent: Agent object
+        """
+
         road, _, _ = self.agents[agent]
         self._road_index[road].remove(agent)
         del self.agents[agent]
         self.agent_deleted.emit()
 
     def move_agent(self, agent):
+        """
+        Update an agent's velocity, acceleration, road, position, lane, and nearest conflict
+
+        :param agent: Agent object
+        """
+
         road, pos, lane = self.agents[agent]
 
         new_acc = agent.deliberate_acc()
@@ -66,18 +101,39 @@ class AgentManager(QObject):
             self.agents[agent] = (new_road, new_pos, new_lane)
 
     def update_agent_neighborhood(self, agent):
+        """
+        Update an agent's neighborhood
+
+        :param agent: Agent object
+        """
+
         agent.neighborhood = self.get_neighbors(agent)
 
     def update_agent_sight_distance(self, agent):
+        """
+        Update an agent's sight distance
+
+        :param agent: Agent object
+        """
+
         agent.sight_distance = self.compute_ssd(agent.vel)
 
     def step(self):
+        """
+        Called per simulation timestep.
+        Move all active agents
+        """
+
         for agent in list(self.agents):
             self.update_agent_sight_distance(agent)
             self.update_agent_neighborhood(agent)
             self.move_agent(agent)
 
     def update_agent_time_active(self):
+        """
+        Update all active agent's time_active attribute
+        """
+
         for agent in self.agents:
             agent.time_active += 1
 
@@ -113,6 +169,13 @@ class AgentManager(QObject):
         return ssd
 
     def get_neighbors(self, agent):
+        """
+        Determine the neighborhood of an agent
+
+        :param agent: Agent object
+        :return: neighborhood dictionary
+        """
+
         my_road, my_pos, my_lane = self.agents[agent]
         ssd_front = agent.sight_distance
 
@@ -158,6 +221,17 @@ class AgentManager(QObject):
         return neighborhood
 
     def members(self, road, start=0, end=None, lane=None):
+        """
+        Get members of a road or section of a road
+
+        :param road: Road object
+        :param start: Start point; default is 0.0 (start of road)
+        :param end: End point; default is None (measure until end of road)
+        :param lane: Specify lane; default is None (measure all lanes of road)
+
+        :return: members (list of agents)
+        """
+
         members = list(self._road_index[road])
 
         if start or end is not None:
@@ -167,6 +241,18 @@ class AgentManager(QObject):
         return members
 
     def _filter_within(self, agent, road, start, end, lane):
+        """
+        Determine if agent is within the parameters of members method
+
+        :param agent: Agent object
+        :param road: Road object
+        :param start: Start point
+        :param end: End point
+        :param lane: Sepcify lane
+
+        :return: True if agent is within the parameters, False otherwise
+        """
+
         road_, pos, lane_ = self.agents[agent]
 
         if road_ == road:
@@ -179,5 +265,9 @@ class AgentManager(QObject):
         return False
 
     def reset(self):
+        """
+        Clear active agents dictionary
+        """
+
         for agent in list(self.agents):
             self.remove_agent(agent)

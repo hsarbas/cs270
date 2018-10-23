@@ -4,6 +4,22 @@ from math import sqrt
 
 def intelligent_driver_model(vel, vel_max, acc_max, dec_max, vel_front=LARGE_NUMBER, gap_front=LARGE_NUMBER,
                              s0=SAFE_GAP, acc_exp=ACC_EXP, s1=S1, safe_time_headway=SAFE_TIME_HEADWAY):
+    """
+    Car-following model: Intelligent Driver Model
+
+    :param vel: current velocity
+    :param vel_max: maximum velocity
+    :param acc_max: maximum acceleration
+    :param dec_max: maximum deceleration
+    :param vel_front: velocity of front vehicle
+    :param gap_front: distance from front vehicle
+    :param s0: safe gap between two vehicles
+    :param acc_exp: acceleration exponent
+    :param s1:
+    :param safe_time_headway: safe time headway between two vehicles
+
+    :return: acceleration due to car-following model; round to two decimal places
+    """
 
     gap_front = LARGE_NUMBER if gap_front == 0 else gap_front
 

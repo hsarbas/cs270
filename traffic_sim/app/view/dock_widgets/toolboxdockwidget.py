@@ -5,7 +5,19 @@ from PySide2.QtGui import *
 
 
 class ToolBoxDockWidget(QDockWidget):
+    """
+    Toolbox containing buttons for displaying different road networks
+    Inherits QDockWidget class
+    """
+
     def __init__(self, parent, gc):
+        """
+        Initialize ToolBoxDockWidget
+
+        :param parent: app object
+        :param gc: graphics context (GraphicsView object)
+        """
+
         super(ToolBoxDockWidget, self).__init__(parent=parent)
         self.setWindowTitle('Toolbox')
         # self.setFeatures(QDockWidget.DockWidgetVerticalTitleBar)
@@ -32,7 +44,19 @@ class ToolBoxDockWidget(QDockWidget):
 
 
 class ConflictTypes(QWidget):
+    """
+    Contains buttons for displaying road network for different conflict types
+    Inherits QWidget class
+    """
+
     def __init__(self, gc, parent):
+        """
+        Initialize ConflictTypes
+
+        :param gc: graphics context (GraphicsView object)
+        :param parent: app object
+        """
+
         super(ConflictTypes, self).__init__(parent=parent)
         self.gc = gc
         self.parent = parent
@@ -72,17 +96,41 @@ class ConflictTypes(QWidget):
         btn_layout.addWidget(crossing_btn, 2, 0)
 
     def merging_btn_clicked(self):
+        """
+        Responds to 'clicked' signal emitted by merging_btn
+        """
+
         self.gc.canvas.add_merging_conflict()
 
     def diverging_btn_clicked(self):
+        """
+        Responds to 'clicked' signal emitted by diverging_btn
+        """
+
         self.gc.canvas.add_diverging_conflict()
 
     def crossing_btn_clicked(self):
+        """
+        Responds to 'clicked' signal emitted by crossing_btn
+        """
+
         self.gc.canvas.add_crossing_conflict()
 
 
 class IntersectionTypes(QWidget):
+    """
+    Contains buttons for displaying road network for different intersection types
+    Inherits QWidget class
+    """
+
     def __init__(self, gc, parent):
+        """
+        Initialize IntersectionTypes
+
+        :param gc: graphics context (GraphicsView object)
+        :param parent: app object
+        """
+
         super(IntersectionTypes, self).__init__(parent=parent)
         self.gc = gc
         self.parent = parent
@@ -123,13 +171,29 @@ class IntersectionTypes(QWidget):
         btn_layout.addWidget(four_legged_btn, 3, 0)
 
     def t_intersection_btn_clicked(self):
+        """
+        Responds to 'clicked' signal emitted by t_intersection_btn
+        """
+
         self.gc.canvas.add_t_intersection()
 
     def y_intersection_btn_clicked(self):
+        """
+        Responds to 'clicked' signal emitted by y_intersection_btn
+        """
+
         self.gc.canvas.add_y_intersection()
 
     def roundabout_btn_clicked(self):
+        """
+        Responds to 'clicked' signal emitted by roundabout_btn
+        """
+
         self.gc.canvas.add_roundabout()
 
     def four_legged_btn_clicked(self):
+        """
+        Responds to 'clicked' signal emitted by four_legged_btn
+        """
+
         self.gc.canvas.add_four_legged()

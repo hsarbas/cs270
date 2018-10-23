@@ -3,10 +3,23 @@ import random
 
 
 class Dispatcher(QObject):
+    """
+    Dispatcher class
+
+    dispatch_agent: signal fired by dispatcher when current time is a multiple of dispatcher flow rate
+    (received by simulation engine)
+    """
 
     dispatch_agent = Signal(dict)
 
     def __init__(self, road):
+        """
+        Initialize Dispatcher
+
+        :param road: road to which the dispatcher is attached; Road object
+        flow_rate: dispatch agent every x seconds
+        """
+
         super(Dispatcher, self).__init__(parent=None)
         self.road = road
         self.clock = None
@@ -14,6 +27,13 @@ class Dispatcher(QObject):
         self.flow_rate = None
 
     def run(self, clock):
+        """
+        Activate dispatcher at the start of simulation
+
+        :param clock: Clock object
+        :return:
+        """
+
         self.flow_rate = 10
         # self.flow_rate = random.choice([3, 5, 7, 9])
 
@@ -24,6 +44,12 @@ class Dispatcher(QObject):
             self.clock = None
 
     def _signal_callback(self, time):
+        """
+        Responds to 'coarse' signal emitted by Clock
+
+        :param time: current time
+        """
+
         if time % self.flow_rate == 0:
             lanes = []
             for lane in range(self.road.lanes):

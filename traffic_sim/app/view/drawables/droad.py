@@ -7,7 +7,17 @@ import weakref
 
 
 class DLink(QGraphicsLineItem):
+    """
+    Link drawable class
+    Inherits QGraphicsLineItem
+    """
+
     def __init__(self, link):
+        """
+        Initialize DLink
+
+        :param link: Link object
+        """
         super(DLink, self).__init__(parent=None)
         self._w_link = weakref.ref(link)
 
@@ -24,11 +34,24 @@ class DLink(QGraphicsLineItem):
 
     @property
     def object(self):
+        """
+        :return: Link object referenced (weakly) by self._w_link
+        """
         return self._w_link()
 
 
 class DConnector(QGraphicsLineItem):
+    """
+    Connector drawable class
+    Inherits QGraphicsLineItem
+    """
+
     def __init__(self, connector):
+        """
+        Initialize DConnector
+
+        :param connector: Connector object
+        """
         super(DConnector, self).__init__(parent=None)
         self._w_conn = weakref.ref(connector)
 
@@ -45,4 +68,8 @@ class DConnector(QGraphicsLineItem):
 
     @property
     def object(self):
+        """
+        :return: Connector object referenced (weakly) by self._w_conn
+        """
+
         return self._w_conn()

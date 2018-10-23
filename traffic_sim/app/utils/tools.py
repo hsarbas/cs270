@@ -3,18 +3,44 @@ from math import sqrt
 
 
 def mps_to_kph(mps):
+    """
+    Convert meters per second to kilometers per hour
+
+    :param mps: meters per second
+    :return: kilometers per hour; round to 2 decimal places
+    """
+
     return round(mps * 3.6, 2)
 
 
 def to_m(px):
+    """
+    Convert pixels to meters
+
+    :param px: pixels
+    :return: meters; round to 2 decimal places
+    """
+
     return round(px * const.PX2M_DEFAULT, 2)
 
 
 def to_px(m):
+    """
+    Convert meters to pixels
+
+    :param m: meters
+    :return: pixels (integer)
+    """
     return int(float(m) / const.PX2M_DEFAULT)
 
 
 def direction(value):
+    """
+    Determines direction of vector
+
+    :param value:
+    :return:
+    """
     if value > 0:
         return 1
     elif value < 0:
@@ -78,6 +104,14 @@ def delta_pt_in_perp_line(x0, y0, xt, yt, d):
 
 
 def locate_global(road, pos, lane):
+    """
+    Computes the global coordinates of an Agent
+
+    :param road: current road (Road object)
+    :param pos: position relative to current road (m)
+    :param lane: current lane
+    :return: x and y coordinates
+    """
 
     x0, y0 = road.src.x, road.src.y
     xt, yt = road.dst.x, road.dst.y

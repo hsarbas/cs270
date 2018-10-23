@@ -17,7 +17,12 @@ from app.model.simulator import Engine
 
 
 class TrafficSim(QMainWindow):
+
     def __init__(self, parent):
+        """
+        Create app main UI (QMainWindow)
+        :param parent: UI's parent application (QApplication)
+        """
         super(TrafficSim, self).__init__()
         self.parent = parent
 
@@ -42,6 +47,10 @@ class TrafficSim(QMainWindow):
         self.show()
 
     def _initialize_ui(self):
+        """
+        Initialize UI components
+        """
+
         self.setWindowTitle('CS270 Final Project - Traffic Simulator')
 
         icons_dir = os.path.join(os.path.dirname(__file__), 'view/icons/toolbar icons')
@@ -151,6 +160,9 @@ class TrafficSim(QMainWindow):
         self.addDockWidget(Qt.BottomDockWidgetArea, self.results)
 
     def _initialize_db(self):
+        """
+        Create and initialize database
+        """
 
         if os.name == 'posix':
             _db_dir = os.path.join(os.path.dirname(__file__), 'model/db/simulator.fs')
@@ -172,6 +184,10 @@ class TrafficSim(QMainWindow):
             transaction.commit()
 
     def _populate_db(self):
+        """
+        Populate database with road network components of different conflict and intersection types
+        """
+
         self._populate_merging()
         self._populate_diverging()
         self._populate_crossing()
@@ -181,6 +197,10 @@ class TrafficSim(QMainWindow):
         self._populate_four_legged()
 
     def _populate_merging(self):
+        """
+        Create merging conflict road network components
+        """
+
         link_1 = factory.create_link('m link 1', 100, 100, 590, 100, 2)
         link_2 = factory.create_link('m link 2', 650, 100, 1000, 100, 2)
         link_3 = factory.create_link('m link 3', 200, 300, 600, 125, 2)
@@ -198,6 +218,10 @@ class TrafficSim(QMainWindow):
         transaction.commit()
 
     def _populate_diverging(self):
+        """
+        Create diverging conflict road network components
+        """
+
         link_1 = factory.create_link('d link 1', 100, 100, 500, 100, 2)
         link_2 = factory.create_link('d link 2', 560, 100, 1000, 100, 2)
         link_3 = factory.create_link('d link 3', 560, 160, 930, 350, 2)
@@ -215,15 +239,31 @@ class TrafficSim(QMainWindow):
         transaction.commit()
 
     def _populate_crossing(self):
+        """
+        Create crossing conflict road network components
+        """
+
         pass
 
     def _populate_t_intersection(self):
+        """
+        Create T-intersection road network components
+        """
+
         pass
 
     def _populate_y_intersection(self):
+        """
+        Create Y-intersection road network components
+        """
+
         pass
 
     def _populate_roundabout(self):
+        """
+        Create roundabout road network components
+        """
+
         link_1 = factory.create_link('r link 1', 50, 320, 250, 320, 2)
         link_2 = factory.create_link('r link 2', 290, 350, 380, 450, 2)
         link_3 = factory.create_link('r link 3', 400, 495, 400, 650, 2)
@@ -278,13 +318,25 @@ class TrafficSim(QMainWindow):
         transaction.commit()
 
     def _populate_four_legged(self):
+        """
+        Create four-legged intersection road network components
+        """
+
         pass
 
     def _close_db(self):
+        """
+        Close database connection
+        """
+
         if self.db_connection:
             self.db_connection.close()
 
     def _delete_db(self):
+        """
+        Delete database contents
+        """
+
         if os.name == 'posix':
             _db_dir = os.path.join(os.path.dirname(__file__), 'model/db/')
         else:
@@ -295,27 +347,59 @@ class TrafficSim(QMainWindow):
                 os.remove(os.path.join(root, file_))
 
     def clear_map(self):
+        """
+        Clear canvas contents
+        """
+
         pass
 
     def open_simulation_parameters(self):
+        """
+        Set parameters for simulation
+        """
+
         pass
     
     def run(self):
+        """
+        Run simulation
+        """
+
         self.simulator.play()
 
     def pause(self):
+        """
+        Pause current simulation
+        """
+
         self.simulator.pause()
 
     def stop(self):
+        """
+        Stop current simulation
+        """
+
         self.simulator.stop()
 
     def zoom_in(self):
+        """
+        Zoom in by scaling contents of GraphicsView by a factor of 1.1
+        """
+
         self.gc.scale(1.1, 1.1)
 
     def zoom_out(self):
+        """
+        Zoom out by scaling contents of GraphicsView by a factor of 0.9
+        """
+
         self.gc.scale(0.9, 0.9)
 
     def zoom_to_fit(self):
+        """
+        Scale contents of GraphicsView to fit into canvas size
+        :return:
+        """
         transform = QTransform(1.000000, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000, 0.000000, 1.000000)
 
         self.gc.setTransform(transform)
@@ -323,6 +407,12 @@ class TrafficSim(QMainWindow):
         self.gc.ensureVisible(self.gc.canvas.itemsBoundingRect())
 
     def closeEvent(self, event):
+        """
+        Prompt user for confirmation before closing app
+
+        :param event: user input - ignore or accept
+        """
+
         reply = QMessageBox.question(self, 'Quit simulator',
                                            "Are you sure to close the app?", QMessageBox.Yes |
                                            QMessageBox.No, QMessageBox.No)

@@ -10,7 +10,26 @@ import copy
 
 
 class Engine(QObject):
+    """
+    Simulator engine
+    """
+
     def __init__(self, parent, gc):
+        """
+        Initialize engine
+
+        :param parent: app
+        :param gc: graphics context (GraphicsView object)
+
+        clock: simulation clock (Clock object)
+        scene: Scene object
+        agent_manager: AgentManager object
+        conflict_manager: ConflictManager object
+        graph: road network converted to Networkx DiGraph object
+        agent_counter: AgentCounter object
+        time_speed_observer: TimeSpeedObserver object
+        """
+
         super(Engine, self).__init__(parent=parent)
         self.parent = parent
         self.clock = Clock()
@@ -26,11 +45,21 @@ class Engine(QObject):
         self.time_speed_observer = TimeSpeedObserver(self.agent_manager)
 
     def update_timer(self, time):
+        """
+        Update status bar timer display
+
+        :param time: current time
+        """
+
         self.parent.status_bar.showMessage('Simulation time: ' + str(time))
         self.agent_manager.update_agent_time_active()
         self.update_ave_time_speed()
 
     def update_counters(self):
+        """
+        Update agent counters
+        """
+
         results = self.parent.results
         created = self.agent_counter.created
         deleted = self.agent_counter.deleted
@@ -41,6 +70,10 @@ class Engine(QObject):
         results.active_input.setText(str(active))
 
     def update_ave_time_speed(self):
+        """
+        Update average speed and average travel time
+        """
+
         results = self.parent.results
         ave_speed = self.time_speed_observer.ave_speed
         ave_time = self.time_speed_observer.ave_time
@@ -49,10 +82,20 @@ class Engine(QObject):
         results.time_input.setText(str(round(ave_time, 2)))
 
     def step(self):
+        """
+        Simulation time step
+        """
+
         self.agent_manager.step()
         self.update_counters()
 
     def play(self):
+        """
+        Run simulation
+        Create and activate dispatchers per entry road
+        Activate simulation clock
+        """
+
         self.convert_to_networkx_graph()
         self.gc.canvas.recolor()
 
@@ -74,9 +117,17 @@ class Engine(QObject):
         self.clock.run()
 
     def pause(self):
+        """
+        Pause current simulation
+        """
+
         self.clock.pause()
 
     def stop(self):
+        """
+        Stop current simulation
+        """
+
         self.gc.canvas.recolor(run=False)
         self.agent_manager.reset()
         self.clock.reset()
@@ -86,6 +137,12 @@ class Engine(QObject):
         self.update_ave_time_speed()
 
     def agent_dispatched_callback(self, init_val):
+        """
+        Responds to 'dispatch_agent' signal emitted by Dispatcher
+
+        :param init_val: agent initial values (dict)
+        """
+
         init_vel = init_val['init_vel']
         init_acc = init_val['init_acc']
 
@@ -102,6 +159,10 @@ class Engine(QObject):
         self.gc.canvas.add_dagent(agent)
 
     def convert_to_networkx_graph(self):
+        """
+        Convert road network to Networkx DiGraph object
+        """
+
         connectors = self.scene.connectors
         self.graph = nx.DiGraph()
 
@@ -125,7 +186,14 @@ class Engine(QObject):
         for entry_road in self.scene.entry_roads:
             for exit_road in self.scene.exit_roads:
                 for route in nx.all_simple_paths(self.graph, entry_road, exit_road):
-                    self.scene.routes[entry_road].append(route)
+                    self.scene.add_route(entry_road, route)
 
     def random_route(self, road_label):
+        """
+        Select random route from list of routes
+        :param road_label: label of route starting road (string)
+
+        :return: route
+        """
+
         return random.choice(self.scene.routes[road_label])

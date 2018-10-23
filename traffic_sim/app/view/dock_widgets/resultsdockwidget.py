@@ -1,11 +1,20 @@
-import os
 from PySide2.QtWidgets import *
-from PySide2.QtCore import *
-from PySide2.QtGui import *
 
 
 class ResultsDockWidget(QDockWidget):
+    """
+    Displays running values for AgentCounter and TimeSpeedObserver
+    Inherits QDockWidget
+    """
+
     def __init__(self, parent, gc):
+        """
+        Initialize ResultsDockWidget
+
+        :param parent: app
+        :param gc: graphics context (GraphicsView object)
+        """
+
         super(ResultsDockWidget, self).__init__(parent=parent)
         self.setWindowTitle('Results')
 
