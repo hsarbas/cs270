@@ -243,7 +243,23 @@ class TrafficSim(QMainWindow):
         Create crossing conflict road network components
         """
 
-        pass
+        link_1 = factory.create_link('c link 1', 50, 300, 350, 300, 2)
+        link_2 = factory.create_link('c link 2', 420, 25, 420, 225, 2)
+        link_3 = factory.create_link('c link 3', 500, 300, 800, 300, 2)
+        link_4 = factory.create_link('c link 4', 420, 380, 420, 600, 2)
+
+        conn_1_3 = factory.create_connector('c conn 1', link_1, link_3, [1])
+        conn_2_4 = factory.create_connector('c conn 2', link_2, link_4, [1])
+
+        self.db_root['roads']['links'][link_1.label] = link_1
+        self.db_root['roads']['links'][link_2.label] = link_2
+        self.db_root['roads']['links'][link_3.label] = link_3
+        self.db_root['roads']['links'][link_4.label] = link_4
+
+        self.db_root['roads']['connectors'][conn_1_3.label] = conn_1_3
+        self.db_root['roads']['connectors'][conn_2_4.label] = conn_2_4
+
+        transaction.commit()
 
     def _populate_t_intersection(self):
         """
